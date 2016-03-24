@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/visualisation">
+        <file>lib/d3.v3/d3.min.js</file>
+        <file>html/scatterplot.html</file>
+        <file>html/parallelcoordinatesplot.html</file>
+        <file>html/matrixscatterplot.html</file>
+    </qresource>
+</RCC>
