@@ -8,13 +8,23 @@
 
 <body>
   <script>
-     var data = [1,2]
-	 var p = d3.select("body").selectAll("p")
-	 .data(data)
-	 .enter()
-	 .append("p")
-         .text("Scatter");
-  </script
+  var updatePlot = function(data) {
+      d3.select("body")
+      .data(data)
+      .enter()
+      .append("p")
+      .text(function(d){return d;});
+  }
+
+  new QWebChannel(qt.webChannelTransport,
+    function(channel) {
+      var dataModel = channel.objects.dataModel;
+      var data = dataModel.dataString;
+      updatePlot(data);
+      dataModel.dataChanged.connect(updatePlot);
+    }
+  );
+  </script>
 
 </body>
 </html>

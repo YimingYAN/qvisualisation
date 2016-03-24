@@ -2,6 +2,8 @@
 #define VISUALISATIONVIEWMODEL_H
 
 #include <QWebEngineView>
+#include <QString>
+
 namespace Visualisation {
 class VisualisationDataModel;
 
@@ -10,12 +12,12 @@ class VisualisationDataModel;
  */
 class VisualisationViewModel : public QWebEngineView
 {
+
 public:
     explicit VisualisationViewModel(QWidget *parent = nullptr);
     virtual void setDataModel(VisualisationDataModel* dataModel);
+    virtual void linkWithJavaScript();
     virtual ~VisualisationViewModel();
-
-protected:
 
 private:
     VisualisationDataModel* m_dataModel;

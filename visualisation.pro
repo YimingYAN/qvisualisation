@@ -5,14 +5,13 @@
 #-------------------------------------------------
 
 QT       += core gui
-
 greaterThan(QT_MAJOR_VERSION, 4): {
     QT += widgets
     greaterThan(QT_MINOR_VERSION, 3): QT += webenginewidgets webchannel
 }
+CONFIG   += c++11
 TARGET = visualisation
 TEMPLATE = app
-
 
 SOURCES += main.cpp\
         mainwindow.cpp \

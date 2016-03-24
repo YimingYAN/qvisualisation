@@ -1,5 +1,6 @@
 #include "visualisationviewmodel.h"
 #include "visualisationdatamodel.h"
+#include <QWebChannel>
 
 using namespace Visualisation;
 
@@ -13,6 +14,16 @@ VisualisationViewModel::VisualisationViewModel(QWidget *parent)
 void VisualisationViewModel::setDataModel(VisualisationDataModel *dataModel)
 {
     m_dataModel = dataModel;
+}
+
+void VisualisationViewModel::linkWithJavaScript()
+{
+    if(m_dataModel) {
+        QWebChannel* channel = new QWebChannel(this);
+        channel->registerObject(QStringLiteral("dataModel"), m_dataModel);
+        this->page()->setWebChannel(channel);
+    }
+    return;
 }
 
 VisualisationViewModel::~VisualisationViewModel()
