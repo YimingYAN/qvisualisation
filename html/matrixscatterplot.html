@@ -2,19 +2,321 @@
 <html lang="en">
 <meta charset="utf-8">
 <head>
-  <script type="text/javascript" src="qrc:///visualisation/lib/d3.v3/d3.min.js"></script>
-  <script type="text/javascript" src="qrc:///qtwebchannel/qwebchannel.js"></script>
+<!--  <link rel="stylesheet" type="text/css" href="qrc:///visualisation/html/matrixscatterplot.css">-->
+  <script src="qrc:///visualisation/lib/d3.v3/d3.min.js"></script>
+  <script src="qrc:///visualisation/lib/jquery.v2/jquery-2.2.2.min.js"></script>
+  <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+
+<style>
+body {
+    margin: auto auto auto auto;
+    height: 100%;
+    width: calc();
+    overflow: hidden;
+    font-size: 12px;
+}
+  .mscatter {
+/*    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+    margin-top: auto;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-size: 12px;*/
+/*    width: 20px;
+    height: 720px;*/
+    float: center;
+  }
+  svg {
+    font: 10px sans-serif;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .axis,
+  .frame {
+    shape-rendering: crispEdges;
+  }
+
+  .axis line {
+    stroke: #ddd;
+  }
+
+  .axis path {
+    display: none;
+  }
+
+  .frame {
+    fill: none;
+    stroke: #aaa;
+  }
+
+  circle {
+    fill-opacity: .7;
+  }
+
+  circle.hidden {
+    fill: #ccc !important;
+  }
+
+  .mscatter .extent {
+    fill: #000;
+    fill-opacity: .125;
+    stroke: #fff;
+  }
+</style>
 </head>
-
 <body>
-  <script>
-     var data = [1,2]
-	 var p = d3.select("body").selectAll("p")
-	 .data(data)
-	 .enter()
-	 .append("p")
-         .text("Matrix Scatter");
-  </script>
+    <div id="mscatter_plot" class="mscatter"></div>
+    <script>
+    new QWebChannel(qt.webChannelTransport,
+      function(channel) {
+        var dataModel = channel.objects.dataModel;
+        window["dataModel"] = dataModel;
+        updatePlot();
+        dataModel.dataChanged.connect(updatePlot);
+      }
+    );
 
-</body>
+    var updatePlot = function() {
+      // reset the canvas
+      d3.select("svg").remove();
+      var point_radius = 1.5;
+      window["point_radius"] = point_radius;
+      var rows  = dataModel.dataRows;
+      window["rows"]  = rows;
+
+      var selNames = new Array();
+      var all_names = dataModel.allNames;
+      //var selNamesIdx = VizDataObject.selectedDataEntries();
+      // todo get selected indices from data
+      var selNamesIdx = [0,1,2];
+
+      for(i = 0; i < selNamesIdx.length; i++) {
+         selNames[i] = all_names[selNamesIdx[i]];
+      }
+
+      var names = new Array();
+      names = selNames;
+
+      var spec = ["nospec"];
+      var data = new Array();
+      var dataJson = dataModel.dataJson;
+
+      for (i = 0; i < rows; i++) {
+        data[i] = new Array();
+        (data[i])["species"] = spec[0];
+        for (j = 0; j < selNamesIdx.length; j++) {
+          (data[i])[names[j]] = (dataJson[i])[names[j]];
+        }
+      }
+
+      window["data"] = data;
+      window["names"] = names;
+      window["selNames"] = selNames;
+      window["selNamesIdx"] = selNamesIdx;
+      window["all_names"] = all_names;
+
+      var colorgen = d3.scale.category20();
+      var flowers  = data;
+
+      var width = $(window).width();// - 10;
+      var height= $(window).height(); //- 10;
+      var size;
+      var xsize;
+      var ysize;
+      var padding = 10;
+
+      var nvariables = selNamesIdx.length;
+      size  = Math.min(width,height)/nvariables - 19.5; // Min(width/cols - 40;
+      var custspace = Math.max(-4*nvariables + 30,4);
+      xsize = width/nvariables - custspace;// - padding/2;
+      ysize = height/nvariables - custspace;//- padding/2;
+
+      window["xsize"] = xsize;
+      window["ysize"] = ysize;
+      window["padding"] = padding;
+
+      var x = d3.scale.linear()
+        .range([padding / 2, xsize - padding / 2]);
+      var y = d3.scale.linear()
+        .range([ysize - padding / 2, padding / 2]);
+      window["x"] = x;
+      window["y"] = y;
+
+      var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom")
+        .ticks(5);
+
+      var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left")
+        .ticks(5);
+
+      var color = d3.scale.category10();
+      window["color"] = color;
+
+      var domainByTrait = {},
+        traits = d3.keys(data[0]).filter(function(d) {
+          return d !== "species";
+        }),
+        n = traits.length;
+
+      traits.forEach(function(trait) {
+        domainByTrait[trait] = d3.extent(data, function(d) {
+          return d[trait];
+        });
+      });
+      window["domainByTrait"] = domainByTrait;
+
+      xAxis.tickSize(ysize*n);
+      yAxis.tickSize(-xsize*n);
+
+      var brush = d3.svg.brush()
+        .x(x)
+        .y(y)
+        .on("brushstart", brushstart)
+        .on("brush", brushmove)
+        .on("brushend", brushend);
+      window["brush"] = brush;
+
+      d3.select("#mscatter_plot")
+        .attr("width", xsize*n + 2*padding)
+        .attr("height", ysize * n + 2*padding);
+
+      var svg = d3.select("#mscatter_plot").append("svg")
+        .attr("width", xsize * n + 2*padding)
+        .attr("height", ysize * n + 2*padding)
+        .append("g")
+        .attr("transform", "translate(" + padding + "," + padding / 2 + ")");
+
+      svg.selectAll(".x.axis")
+        .data(traits)
+        .enter().append("g")
+        .attr("class", "x axis")
+        .attr("transform", function(d, i) {
+        return "translate(" + (n - i - 1) * xsize + ",0)";
+      })
+        .each(function(d) {
+        x.domain(domainByTrait[d]);
+        d3.select(this).call(xAxis);
+      });
+
+      svg.selectAll(".y.axis")
+        .data(traits)
+        .enter().append("g")
+        .attr("class", "y axis")
+        .attr("transform", function(d, i) {
+        return "translate(0," + i*ysize + ")";
+      })
+        .each(function(d) {
+        y.domain(domainByTrait[d]);
+        d3.select(this).call(yAxis);
+      });
+      window["svg"] = svg;
+
+      var cell = svg.selectAll(".cell")
+        .data(cross(traits, traits))
+        .enter().append("g")
+        .attr("class", "cell")
+        .attr("transform", function(d) {
+          return "translate(" + (n - d.i - 1) * xsize + "," + d.j * ysize + ")";
+        })
+        .each(plot);
+
+      // Titles for the diagonal.
+      cell.filter(function(d) {
+        return d.i === d.j;
+      }).append("text")
+        .attr("x", padding)
+        .attr("y", padding)
+        .attr("dy", ".71em")
+        .text(function(d) {
+        return d.x;
+      });
+      window["cell"] = cell;
+
+      d3.select(self.frameElement).style("height", ysize * n + padding + 20 + "px");
+    }
+
+    function plot(p) {
+      var cell = d3.select(this);
+
+      x.domain(domainByTrait[p.x]);
+      y.domain(domainByTrait[p.y]);
+
+      cell.append("rect")
+        .attr("class", "frame")
+        .attr("x", padding / 2)
+        .attr("y", padding / 2)
+        .attr("width", xsize - padding)
+        .attr("height", ysize - padding);
+
+      cell.selectAll("circle")
+        .data(data)
+        .enter().append("circle")
+        .attr("cx", function(d) {
+        return x(d[p.x]);
+      })
+        .attr("cy", function(d) {
+        return y(d[p.y]);
+      })
+        .attr("r", point_radius)
+        .style("fill", function(d) {
+        return color(d.species);
+      });
+
+      cell.call(brush);
+    }
+
+    // Clear the previously-active brush, if any.
+    var brushCell;
+    function brushstart(p) {
+      if (brushCell !== p) {
+        cell.call(brush.clear());
+        x.domain(domainByTrait[p.x]);
+        y.domain(domainByTrait[p.y]);
+        brushCell = p;
+      }
+    }
+
+    // Highlight the selected circles.
+    function brushmove(p) {
+      var e = brush.extent();
+      svg.selectAll("circle").classed("hidden", function(d) {
+        return e[0][0] > d[p.x] || d[p.x] > e[1][0] || e[0][1] > d[p.y] || d[p.y] > e[1][1];
+      });
+    }
+
+     // If the brush is empty, select all circles.
+
+    function brushend() {
+      if (brush.empty()) svg.selectAll(".hidden").classed("hidden", false);
+    }
+
+    function cross(a, b) {
+      var c = [],
+        n = a.length,
+        m = b.length,
+        i, j;
+      for (i = -1; ++i < n;) for (j = -1; ++j < m;) c.push({
+            x: a[i],
+            i: i,
+            y: b[j],
+            j: j
+          });
+      return c;
+    }
+
+    var resizeTimer;
+    $(window).resize(function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(updatePlot, 50);
+    });
+
+  </script>
+  </body>
 </html>

@@ -32,9 +32,9 @@ MainWindow::MainWindow(QWidget *parent) :
     dataModel->setData(data, names);
 
     // For different node, we declaire different ViewModel
-    ScatterPlotViewModel* view = new ScatterPlotViewModel(this);
+    //ScatterPlotViewModel* view = new ScatterPlotViewModel(this);
     //ParallelCoordinatesPlot* view = new ParallelCoordinatesPlot(this);
-    //MatrixScatterPlotViewModel* view = new MatrixScatterPlotViewModel(this);
+    MatrixScatterPlotViewModel* view = new MatrixScatterPlotViewModel(this);
     view->setDataModel(dataModel);
     view->linkWithJavaScript();
     QGridLayout* layout = new QGridLayout;

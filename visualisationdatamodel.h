@@ -19,6 +19,7 @@ class VisualisationDataModel : public QObject
                READ dataJson NOTIFY dataChanged)
     Q_PROPERTY(QStringList allNames
                READ allNames WRITE setNames NOTIFY dataChanged)
+    Q_PROPERTY(int dataRows READ dataRows)
 
 public:
     explicit VisualisationDataModel(QObject *parent = nullptr);
@@ -33,7 +34,7 @@ public:
     int dataCols() const;
 
 signals:
-    void dataChanged(const QJsonDocument &dataJson);
+    void dataChanged();
 
 public slots:
 

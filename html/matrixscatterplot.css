@@ -1,0 +1,40 @@
+.mscatter > svg, .mscatter > canvas { 
+  font: 11px sans-serif;
+  position: absolute;
+}
+.mscatter > canvas {
+  pointer-events: none;
+}
+.mscatter rect.background {
+  fill: transparent;
+}
+.mscatter rect.background:hover {
+  fill: rgba(120,120,120,0.4);
+}
+.mscatter .resize rect {
+  fill: rgba(0,0,0,0.1);
+}
+.mscatter rect.extent {
+  fill: rgba(255,255,255,0.25);
+  stroke: rgba(0,0,0,0.8);
+}
+.mscatter .axis line, .mscatter .axis path {
+  fill: none;
+  stroke: #222;
+  shape-rendering: crispEdges;
+  fill-opacity: 0.9;
+}
+.mscatter canvas {
+  opacity: .5;
+  -moz-transition: opacity 0.3s;
+  -webkit-transition: opacity 0.3s;
+  -o-transition: opacity 0.3s;
+}
+.mscatter canvas.faded {
+  opacity: 0.25;
+}
+
+.mscatter .tick.major {
+  stroke-opacity: 0.4;
+}
+
