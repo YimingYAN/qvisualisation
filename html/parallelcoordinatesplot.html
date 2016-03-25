@@ -1,20 +1,248 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <meta charset="utf-8">
 <head>
-  <script type="text/javascript" src="qrc:///visualisation/lib/d3.v3/d3.min.js"></script>
-  <script type="text/javascript" src="qrc:///qtwebchannel/qwebchannel.js"></script>
+  <!--Order matters-->
+  <link rel="stylesheet" type="text/css" href="qrc:///visualisation/html/d3.parcoords.css">
+  <script src="qrc:///visualisation/lib/d3.v3/d3.min.js"></script>
+  <script src="qrc:///visualisation/lib/underscore.math.js"></script>
+  <script src="qrc:///visualisation/lib/divgrid.js"></script>
+  <script src="qrc:///visualisation/lib/parcoords/d3.parcoords.js"></script>
+  <script src="qrc:///visualisation/lib/jquery.v2/jquery-2.2.2.min.js"></script>
+  <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+
+  <style>
+  body, html {
+    margin: auto auto auto auto;
+    height: 100%;
+    width: calc();
+    overflow: hidden;
+    font-size: 12px;
+  }
+  .slick-row:hover {
+    font-weight: bold;
+    color: #069;
+  }
+  .parcoords {
+    width: calc();
+    height: 50%;
+    float: center;
+  }
+
+  /* data table styles */
+  #grid { height: 45%; color:black; clear: both; position:relative; top: 60px; left: 15px }
+  .row, .header { clear: left; font-size: 14px; line-height: 18px; height: 20px; margin: 5px; width:calc() }
+  .row:hover {text-shadow: -1px 1px 8px #ffc, 1px -1px 8px #ff0000;}
+  .row:nth-child(odd) { background: rgba(0,0,0,0.05); }
+  .header { font-weight: bold; }
+  .cell { float: left; overflow: hidden; white-space: nowrap; width: 120px; height: 22px; }
+  .col-0 { width: 50px;  }
+
+  </style>
 </head>
 
 <body>
+  <div id="parcoords_plot" class="parcoords"></div>
+  <div id="grid"></div>
   <script>
-     var data = [1,2]
-	 var p = d3.select("body").selectAll("p")
-	 .data(data)
-	 .enter()
-	 .append("p")
-         .text("Parallel");
-  </script>
+  new QWebChannel(qt.webChannelTransport,
+    function(channel) {
+      var dataModel = channel.objects.dataModel;
+      window["dataModel"] = dataModel;
+      updatePlot();
+      dataModel.dataChanged.connect(updatePlot);
+    }
+  );
+    var updatePlot = function() {
+        // clear canvas
+        d3.select("svg").remove();
 
-</body>
+        // construct data array
+
+        // dummy data for testing
+        //var data = [
+        //  [0,-0,0,0,0,3 ],
+        //  [1,-1,1,2,1,6 ],
+        //  [2,-2,4,4,0.5,2],
+        //  [3,-3,9,6,0.33,4],
+        //  [4,-4,16,8,0.25,9]
+        //];
+
+        // number of solutions
+        var nsolutions = dataModel.dataRows;
+        var dataJson = dataModel.dataJson;      // get data from c++
+        var data_pc = new Array(nsolutions);    // array of objects
+
+        //alert(nsolutions);
+
+        // selNamesIdx = VizDataObject.selectedDataEntries();
+        // todo
+        var selNamesIdx = [0,1,2];
+
+        var selNames = new Array(selNamesIdx.length);
+        var all_names;
+
+        all_names = dataModel.allNames;
+
+        var dim_map = {};
+        for(i=0; i<selNamesIdx.length; i++) {
+           selNames[i] = all_names[selNamesIdx[i]];
+           //dim_map[selNames[i]]=selNamesIdx[i];
+           dim_map[selNames[i]]=i;
+        }
+        //alert(dim_map);
+        // max and min for color ranges, which is obtained with respect to the first dimension
+        var max_v = (dataJson[0])[selNames[0]];
+        var min_v = (dataJson[0])[selNames[0]];
+        var value;
+        var ndimensions=selNamesIdx.length;
+        for(i=0; i<nsolutions; i++) {
+            var map_pc = {};   // this is an object that requires names to access its members
+            map_pc["ID"]=i;
+            for(j=0; j<ndimensions; j++) {
+                value = (dataJson[i])[selNames[j]];
+                var temp;
+                if( value < 0.1 || value > 999.9 ) temp = value.toExponential(3);
+                else temp = value.toPrecision(4);
+                map_pc[selNames[j]] = temp;
+                if(i==0 && max_v<value) max_v=value;    // update max only for first dimension
+                if(i==0 && min_v>value) min_v=value;    // update min only for first dimension
+            }
+            data_pc[i] = map_pc;
+        }
+
+        // *******
+        // Boxplot
+        // *******
+
+
+        var boxplot_data = new Array(nsolutions);
+        for(i=0;i<nsolutions;i++) {
+            boxplot_data[i] = new Array(ndimensions);
+        }
+
+        for(i=0;i<nsolutions;i++) {
+            for(j=0;j<ndimensions; j++) {
+
+                //var bvalue = VizDataObject.boxPlotParameters(i,selNamesIdx[j]);
+                // todo ----
+                bvalue = [0,0,0,0,0];
+                // todo ----
+                var map_boxplot = {};
+                map_boxplot["ID"]=i;
+                map_boxplot["whiskersBottom"]=bvalue[0];
+                map_boxplot["firstQuartile"] =bvalue[1];
+                map_boxplot["secondQuartile"]=bvalue[2];
+                map_boxplot["thirdQuartile"] =bvalue[3];
+                map_boxplot["whiskersTop"]   =bvalue[4];
+
+                boxplot_data[i][j] = map_boxplot;
+            }
+        }
+
+        //var trept = data_pc[0];
+        //alert(trept[selNames[0]]);
+
+        // margins
+        var margin = {top: 20, right: 20, bottom: 30, left: 40},
+            width  = $(window).width()  - 10 - margin.left - margin.right,
+            height = $(window).height() - 10 - margin.top  - margin.bottom;
+
+        // add marging plus width+height to svg variable
+        var svg = d3.select("body").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom);
+
+        // color ranges
+        var blue_to_brown = d3.scale.linear()
+            .domain([min_v, max_v])
+            .range(["steelblue", "brown"])
+            .interpolate(d3.interpolateLab);
+
+        // call parallel coordinate plot from d3 library with data
+        var pc1 = d3.parcoords()("#parcoords_plot")
+            .data(data_pc)
+            .data_boxplot(boxplot_data)
+            .dimensionsOrder(dim_map)
+            .composite("darken")
+            //.color(function(d) { return blue_to_brown(d[name[0]]); })  // quantitative color scale
+            .alpha(0.2)
+            .render()
+            .brushMode("1D-axes")   // enables brushing of objectives
+            .reorderable()         // enables objective reordering
+            .interactive();         // enables modifications of the number of axis
+
+        pc1.dimensions(selNames);
+
+        var explore_count = 0;
+        var exploring = {};
+        var explore_start = false;
+
+        // changes cursor for brushing and creates a box around the brush area
+        pc1.svg
+            .selectAll(".dimension")
+            .style("cursor", "pointer")
+            .on("click", function(d) {
+                //alert("test");
+                exploring[d] = d in exploring ? false : true;
+                event.preventDefault();
+                if (exploring[d]) d3.timer(explore(d,explore_count));
+            });
+
+        // creates a dynamic table with the first 10 elements of the data
+        var grid = d3.divgrid();
+        d3.select("#grid")
+          .datum(data_pc.slice(0,10))  // first 10 elements
+          .call(grid)
+          .selectAll(".row")
+          .on({
+            "mouseover": function(d) {
+                pc1.highlight([d]);
+             },
+            "mouseout": pc1.unhighlight
+          });
+
+        // modifies the dynamic table accordingly to the brushed area
+        pc1.on("brush", function(d) {
+            d3.select("#grid")
+              .datum(d.slice(0,10))   // first 10 elements
+              .call(grid)
+              .selectAll(".row")
+              .on({
+                "mouseover": function(d) { pc1.highlight([d])},
+                "mouseout": pc1.unhighlight
+              });
+        });
+    }
+
+    // changes the box that delimitates the selected brush area
+    function explore(dimension, count) {
+        if (!explore_start) {
+            explore_start = true;
+            d3.timer(pc1.brush);
+        }
+        var speed = (Math.round(Math.random()) ? 1 : -1) * (Math.random()+0.5);
+        return function(t) {
+            if (!exploring[dimension]) return true;
+            var domain = pc1.yscale[dimension].domain();
+            var width = (domain[1] - domain[0])/4;
+            var center = width*1.5*(1+Math.sin(speed*t/1200)) + domain[0];
+            pc1.yscale[dimension].brush.extent([d3.max([center-width*0.01, domain[0]-width/400]),d3.min([center+width*1.01, domain[1]+width/100])])
+            (pc1.g().filter( function(d) { return d == dimension; }) );
+        };
+    }
+
+    // clear and redraw the window
+    var resizeTimer;
+    $(window).resize(
+        function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(updatePlot, 200);
+        }
+    );
+
+  </script>
+  </body>
+
 </html>
+

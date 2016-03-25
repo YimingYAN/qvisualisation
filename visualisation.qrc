@@ -6,5 +6,9 @@
         <file>html/matrixscatterplot.html</file>
         <file>lib/jquery.v2/jquery-2.2.2.min.js</file>
         <file>html/matrixscatterplot.css</file>
+        <file>html/d3.parcoords.css</file>
+        <file>lib/parcoords/d3.parcoords.js</file>
+        <file>lib/divgrid.js</file>
+        <file>lib/underscore.math.js</file>
     </qresource>
 </RCC>
