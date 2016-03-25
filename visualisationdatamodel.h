@@ -4,6 +4,7 @@
 #include <QStringList>
 #include <QString>
 #include <QVector>
+#include <QJsonDocument>
 #include <QObject>
 
 namespace Visualisation {
@@ -14,30 +15,34 @@ class VisualisationDataModel : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString dataString MEMBER m_dataString
-               READ dataString NOTIFY dataChanged)
-
+    Q_PROPERTY(QJsonDocument dataJson MEMBER m_dataJson
+               READ dataJson NOTIFY dataChanged)
+    Q_PROPERTY(QStringList allNames
+               READ allNames WRITE setNames NOTIFY dataChanged)
 
 public:
     explicit VisualisationDataModel(QObject *parent = nullptr);
-    void setDate(QVector<QVector<qreal> > data);
+    void setData(QVector<QVector<qreal> > data, QStringList names);
+    void setData(QVector<QVector<qreal> > data);
     void setNames(QStringList names);
 
-    QString dataString() const;
     QStringList allNames() const;
+    QJsonDocument dataJson() const;
 
     int dataRows() const;
     int dataCols() const;
 
 signals:
-    void dataChanged();
+    void dataChanged(const QJsonDocument &dataJson);
 
 public slots:
 
 private:
+    void generateJsonDocument();
     QVector<QVector<qreal> > m_data;
     QStringList m_names;
     QString     m_dataString;
+    QJsonDocument m_dataJson;
 };
 
 }

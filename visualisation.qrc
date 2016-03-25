@@ -4,5 +4,6 @@
         <file>html/scatterplot.html</file>
         <file>html/parallelcoordinatesplot.html</file>
         <file>html/matrixscatterplot.html</file>
+        <file>lib/jquery.v2/jquery-2.2.2.min.js</file>
     </qresource>
 </RCC>
