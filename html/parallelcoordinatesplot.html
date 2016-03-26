@@ -72,17 +72,11 @@
         var nsolutions = dataModel.dataRows;
         var dataJson = dataModel.dataJson;      // get data from c++
         var data_pc = new Array(nsolutions);    // array of objects
-
         //alert(nsolutions);
 
-        // selNamesIdx = VizDataObject.selectedDataEntries();
-        // todo
-        var selNamesIdx = [0,1,2];
-
+        selNamesIdx = dataModel.selectedIndices;
         var selNames = new Array(selNamesIdx.length);
-        var all_names;
-
-        all_names = dataModel.allNames;
+        var all_names = dataModel.allNames;
 
         var dim_map = {};
         for(i=0; i<selNamesIdx.length; i++) {
@@ -177,6 +171,7 @@
         var explore_count = 0;
         var exploring = {};
         var explore_start = false;
+        window["explore_start"] = explore_start;
 
         // changes cursor for brushing and creates a box around the brush area
         pc1.svg

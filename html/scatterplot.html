@@ -60,22 +60,22 @@
       window["dataModel"] = dataModel;
       updatePlot();
       dataModel.dataChanged.connect(updatePlot);
+      dataModel.selectedIndicesChanged.connect(updatePlot);
     }
   );
 
   var updatePlot = function() {
       // reset the canvas
       d3.select("svg").remove();
-      // select data to plot
+      // extract data to plot
       var data = dataModel.dataJson;
       var names = dataModel.allNames;
       window["data"] = data;
       window["names"] = names;
 
-      // todo select index from javascript or from pop up window
-      var xIdx = 0;
-      var yIdx = 1;
-      var indices = [xIdx, yIdx];
+      var selectedIndices = dataModel.selectedIndices;
+      // only the first two indices will be considered
+      var indices = [selectedIndices[0], selectedIndices[1]];
 
       var radius = 3;
       var colorgen = d3.scale.category20();

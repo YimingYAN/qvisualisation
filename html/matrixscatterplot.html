@@ -81,9 +81,7 @@ body {
 
       var selNames = new Array();
       var all_names = dataModel.allNames;
-      //var selNamesIdx = VizDataObject.selectedDataEntries();
-      // todo get selected indices from data
-      var selNamesIdx = [0,1,2];
+      var selNamesIdx = dataModel.selectedIndices;
 
       for(i = 0; i < selNamesIdx.length; i++) {
          selNames[i] = all_names[selNamesIdx[i]];

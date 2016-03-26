@@ -8,8 +8,7 @@ using namespace Visualisation;
 VisualisationDataModel::VisualisationDataModel(QObject *parent)
     : QObject(parent)
 {
-    // Test
-    m_dataString = QStringLiteral("Hello World");
+
 }
 
 /*!
@@ -98,4 +97,15 @@ void VisualisationDataModel::generateJsonDocument()
         jsonArray.append(object);
     }
     m_dataJson.setArray(jsonArray);
+}
+
+QVariantList VisualisationDataModel::selectedIndices() const
+{
+    return m_selectedIndices;
+}
+
+void VisualisationDataModel::setSelectedIndices(const QVariantList &selectedIndices)
+{
+    qDebug() << "selectedIndices : " << selectedIndices;
+    m_selectedIndices = selectedIndices;
 }

@@ -2,6 +2,7 @@
 #define VISUALISATIONDATAMODEL_H
 
 #include <QStringList>
+#include <QVariantList>
 #include <QString>
 #include <QVector>
 #include <QJsonDocument>
@@ -20,6 +21,8 @@ class VisualisationDataModel : public QObject
     Q_PROPERTY(QStringList allNames
                READ allNames WRITE setNames NOTIFY dataChanged)
     Q_PROPERTY(int dataRows READ dataRows)
+    Q_PROPERTY(QVariantList selectedIndices READ selectedIndices
+               WRITE setSelectedIndices NOTIFY selectedIndicesChanged)
 
 public:
     explicit VisualisationDataModel(QObject *parent = nullptr);
@@ -33,17 +36,22 @@ public:
     int dataRows() const;
     int dataCols() const;
 
+    QVariantList selectedIndices() const;
+    void setSelectedIndices(const QVariantList &selectedIndices);
+
 signals:
     void dataChanged();
+    void selectedIndicesChanged();
 
 public slots:
 
 private:
     void generateJsonDocument();
     QVector<QVector<qreal> > m_data;
-    QStringList m_names;
-    QString     m_dataString;
+    QStringList   m_names;
+    QString       m_dataString;
     QJsonDocument m_dataJson;
+    QVariantList  m_selectedIndices; // List<int> is not recognised by js
 };
 
 }
