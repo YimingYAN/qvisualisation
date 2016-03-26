@@ -1,5 +1,5 @@
-#include "visualisationviewmodel.h"
-#include "visualisationdatamodel.h"
+#include <visualisation/core/visualisationviewmodel.h>
+#include <visualisation/core/visualisationdatamodel.h>
 #include <QWebChannel>
 
 using namespace Visualisation;

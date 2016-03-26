@@ -1,4 +1,4 @@
-#include "scatterplotviewmodel.h"
+#include <visualisation/core/scatterplotviewmodel.h>
 
 using namespace Visualisation;
 

@@ -1,4 +1,4 @@
-#include "visualisationdatamodel.h"
+#include <visualisation/core/visualisationdatamodel.h>
 
 #include <QJsonObject>
 #include <QJsonArray>

@@ -1,6 +1,6 @@
 #ifndef MATRIXSCATTERPLOTVIEWMODEL_H
 #define MATRIXSCATTERPLOTVIEWMODEL_H
-#include "visualisationviewmodel.h"
+#include <visualisation/core/visualisationviewmodel.h>
 
 namespace Visualisation  {
 

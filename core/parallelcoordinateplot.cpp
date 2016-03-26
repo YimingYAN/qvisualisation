@@ -1,4 +1,4 @@
-#include "parallelcoordinateplot.h"
+#include <visualisation/core/parallelcoordinateplot.h>
 
 using namespace Visualisation;
 

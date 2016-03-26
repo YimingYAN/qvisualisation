@@ -1,10 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "visualisationdatamodel.h"
-#include "visualisationviewmodel.h"
-#include "matrixscatterplotviewmodel.h"
-#include "scatterplotviewmodel.h"
-#include "parallelcoordinateplot.h"
+#include <visualisation/core/visualisationdatamodel.h>
+#include <visualisation/core/visualisationviewmodel.h>
+#include <visualisation/core/matrixscatterplotviewmodel.h>
+#include <visualisation/core/scatterplotviewmodel.h>
+#include <visualisation/core/parallelcoordinateplot.h>
 
 #include <QtGlobal>
 #include <QGridLayout>
@@ -19,19 +19,22 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    int numData = 50;
+    int numCols = 5;
+
     VisualisationDataModel* dataModel = new VisualisationDataModel;
     QVector<QVector<qreal> > data;
     QVector<QVector<QVector<qreal> > > boxPlotData;
     QStringList names;
     QVariantList selectedIndices;
-    data.resize(5);
-    boxPlotData.resize(5);
-    for(int i=0; i<3; ++i) {
+    data.resize(numData);
+    boxPlotData.resize(numData);
+    for(int i=0; i<numCols; ++i) {
         names.append(QString("DataItem" + QString::number(i)));
     }
-    for(int i=0; i<5; ++i) {
-        boxPlotData[i].resize(3);
-        for(int j=0; j<3; ++j) {
+    for(int i=0; i<numData; ++i) {
+        boxPlotData[i].resize(numCols);
+        for(int j=0; j<numCols; ++j) {
             boxPlotData[i][j].resize(5);
             qreal bias = 1.0*qrand()/RAND_MAX;
             qreal value = bias*(i+j);
@@ -45,10 +48,9 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     dataModel->setData(data, names);
     dataModel->setBoxplotData(boxPlotData);
-    selectedIndices.append(0);
-    //selectedIndices.append(1);
-    selectedIndices.append(2);
-    //selectedIndices.append(3);
+    for(int i=0; i<numCols; ++i) {
+        selectedIndices.append(i);
+    }
     dataModel->setSelectedIndices(selectedIndices);
 
     // For different node, we declaire different ViewModel

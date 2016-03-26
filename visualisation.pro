@@ -13,20 +13,24 @@ CONFIG   += c++11
 TARGET = visualisation
 TEMPLATE = app
 
+INCLUDEPATH += $$PWD/../
+
+message($$INCLUDEPATH)
+
 SOURCES += main.cpp\
         mainwindow.cpp \
-    visualisationdatamodel.cpp \
-    visualisationviewmodel.cpp \
-    scatterplotviewmodel.cpp \
-    parallelcoordinateplot.cpp \
-    matrixscatterplotviewmodel.cpp
+    core/visualisationdatamodel.cpp \
+    core/visualisationviewmodel.cpp \
+    core/scatterplotviewmodel.cpp \
+    core/parallelcoordinateplot.cpp \
+    core/matrixscatterplotviewmodel.cpp
 
 HEADERS  += mainwindow.h \
-    visualisationdatamodel.h \
-    visualisationviewmodel.h \
-    scatterplotviewmodel.h \
-    parallelcoordinateplot.h \
-    matrixscatterplotviewmodel.h
+    core/visualisationdatamodel.h \
+    core/visualisationviewmodel.h \
+    core/scatterplotviewmodel.h \
+    core/parallelcoordinateplot.h \
+    core/matrixscatterplotviewmodel.h
 
 FORMS    += mainwindow.ui
 

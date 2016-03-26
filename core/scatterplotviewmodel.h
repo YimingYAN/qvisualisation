@@ -1,6 +1,6 @@
 #ifndef SCATTERPLOTVIEWMODEL_H
 #define SCATTERPLOTVIEWMODEL_H
-#include "visualisationviewmodel.h"
+#include <visualisation/core/visualisationviewmodel.h>
 
 namespace Visualisation  {
 class ScatterPlotViewModel : public VisualisationViewModel

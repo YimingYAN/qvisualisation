@@ -1,4 +1,4 @@
-#include "matrixscatterplotviewmodel.h"
+#include <visualisation/core/matrixscatterplotviewmodel.h>
 
 using namespace Visualisation;
 MatrixScatterPlotViewModel::MatrixScatterPlotViewModel(QWidget *parent)
