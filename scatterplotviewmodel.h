@@ -8,5 +8,6 @@ class ScatterPlotViewModel : public VisualisationViewModel
 public:
     ScatterPlotViewModel(QWidget* parent = nullptr);
 };
+
 }
 #endif // SCATTERPLOTVIEWMODEL_H

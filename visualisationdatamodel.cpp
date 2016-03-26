@@ -14,7 +14,7 @@ VisualisationDataModel::VisualisationDataModel(QObject *parent)
 /*!
  * \brief Recommanded function for setting data and names.
  */
-void VisualisationDataModel::setData(QVector<QVector<qreal> > data, QStringList names)
+void VisualisationDataModel::setData(const QVector<QVector<qreal> > &data, const QStringList &names)
 {
     if(data.size() < 1 || names.size() < 1) {
         return;
@@ -26,10 +26,10 @@ void VisualisationDataModel::setData(QVector<QVector<qreal> > data, QStringList 
     }
     m_data = data;
     m_names = names;
-    generateJsonDocument();
+    generateDataJsonDocument();
 }
 
-void VisualisationDataModel::setData(QVector<QVector<qreal> > data)
+void VisualisationDataModel::setData(const QVector<QVector<qreal> > &data)
 {
     if(data.size() < 1) {
         return;
@@ -42,10 +42,10 @@ void VisualisationDataModel::setData(QVector<QVector<qreal> > data)
         }
     }
     m_data = data;
-    generateJsonDocument();
+    generateDataJsonDocument();
 }
 
-void VisualisationDataModel::setNames(QStringList names)
+void VisualisationDataModel::setNames(const QStringList &names)
 {
     if(names.size() < 1) {
         return;
@@ -58,7 +58,7 @@ void VisualisationDataModel::setNames(QStringList names)
         }
     }
     m_names = names;
-    generateJsonDocument();
+    generateDataJsonDocument();
 }
 
 QStringList VisualisationDataModel::allNames() const
@@ -86,7 +86,7 @@ int VisualisationDataModel::dataCols() const
     return size;
 }
 
-void VisualisationDataModel::generateJsonDocument()
+void VisualisationDataModel::generateDataJsonDocument()
 {
     QJsonArray jsonArray;
     for(int i=0; i<m_data.size(); ++i) {
@@ -97,6 +97,46 @@ void VisualisationDataModel::generateJsonDocument()
         jsonArray.append(object);
     }
     m_dataJson.setArray(jsonArray);
+}
+
+void VisualisationDataModel::generateBoxplotJsonDcoument()
+{
+    QJsonArray jsonArray;
+    for(int i=0; i<m_boxplotData.size(); ++i) {
+        QJsonArray jsonInnerArray;
+        for(int j=0; j<m_boxplotData[i].size(); ++j) {
+            QJsonObject object;
+            object["whiskersBottom"]=m_boxplotData[i][j][0];
+            object["firstQuartile"] =m_boxplotData[i][j][1];
+            object["secondQuartile"]=m_boxplotData[i][j][2];
+            object["thirdQuartile"] =m_boxplotData[i][j][3];
+            object["whiskersTop"]   =m_boxplotData[i][j][4];
+            jsonInnerArray.append(object);
+        }
+        jsonArray.append(jsonInnerArray);
+    }
+    m_boxplotDataJson.setArray(jsonArray);
+}
+
+void VisualisationDataModel::setBoxplotData(const QVector<QVector<QVector<qreal> > > &boxPlotData)
+{
+    if(boxPlotData.size() == 0 || boxPlotData.size() != m_data.size()) {
+        return;
+    }
+    for(int i=0; i<boxPlotData.size(); ++i) {
+        if(boxPlotData[i].size() != m_data[i].size()) {
+            return;
+        }
+    }
+    m_boxplotData = boxPlotData;
+    qDebug() << "m_boxPlotData " << m_boxplotData;
+    generateBoxplotJsonDcoument();
+}
+
+QJsonDocument VisualisationDataModel::boxplotDataJson() const
+{
+    qDebug() << "Send m_boxplotDataJson: \n" << m_boxplotDataJson;
+    return m_boxplotDataJson;
 }
 
 QVariantList VisualisationDataModel::selectedIndices() const

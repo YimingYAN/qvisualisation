@@ -115,21 +115,17 @@
             boxplot_data[i] = new Array(ndimensions);
         }
 
+        var boxplotDataJson = dataModel.boxplotDataJson;
         for(i=0;i<nsolutions;i++) {
             for(j=0;j<ndimensions; j++) {
-
-                //var bvalue = VizDataObject.boxPlotParameters(i,selNamesIdx[j]);
-                // todo ----
-                bvalue = [0,0,0,0,0];
-                // todo ----
+                var bvalue = boxplotDataJson[i][selNamesIdx[j]];
                 var map_boxplot = {};
                 map_boxplot["ID"]=i;
-                map_boxplot["whiskersBottom"]=bvalue[0];
-                map_boxplot["firstQuartile"] =bvalue[1];
-                map_boxplot["secondQuartile"]=bvalue[2];
-                map_boxplot["thirdQuartile"] =bvalue[3];
-                map_boxplot["whiskersTop"]   =bvalue[4];
-
+                map_boxplot["whiskersBottom"]=bvalue["whiskersBottom"];
+                map_boxplot["firstQuartile"] =bvalue["firstQuartile"];
+                map_boxplot["secondQuartile"]=bvalue["secondQuartile"];
+                map_boxplot["thirdQuartile"] =bvalue["thirdQuartile"];
+                map_boxplot["whiskersTop"]   =bvalue["whiskersTop"];
                 boxplot_data[i][j] = map_boxplot;
             }
         }
