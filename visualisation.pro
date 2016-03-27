@@ -18,7 +18,6 @@ INCLUDEPATH += $$PWD/../
 message($$INCLUDEPATH)
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     core/visualisationdatamodel.cpp \
     core/visualisationviewmodel.cpp \
     core/scatterplotviewmodel.cpp \
@@ -29,7 +28,7 @@ SOURCES += main.cpp\
     core/matrixscatterplotviewwidget.cpp \
     core/parallelcoordinatesplotviewwidget.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     core/visualisationdatamodel.h \
     core/visualisationviewmodel.h \
     core/scatterplotviewmodel.h \
@@ -41,7 +40,7 @@ HEADERS  += mainwindow.h \
     core/matrixscatterplotviewwidget.h \
     core/parallelcoordinatesplotviewwidget.h
 
-FORMS    += mainwindow.ui \
+FORMS    += \
     core/visualisationviewwidget.ui
 
 RESOURCES += \
