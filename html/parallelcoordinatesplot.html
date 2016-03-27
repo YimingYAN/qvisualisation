@@ -51,6 +51,7 @@
       window["dataModel"] = dataModel;
       updatePlot();
       dataModel.dataChanged.connect(updatePlot);
+      dataModel.selectedIndicesChanged.connect(updatePlot);
     }
   );
     var updatePlot = function() {

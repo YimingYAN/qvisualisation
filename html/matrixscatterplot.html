@@ -68,6 +68,7 @@ body {
         window["dataModel"] = dataModel;
         updatePlot();
         dataModel.dataChanged.connect(updatePlot);
+        dataModel.selectedIndicesChanged.connect(updatePlot);
       }
     );
 

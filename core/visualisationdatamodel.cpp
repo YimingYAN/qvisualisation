@@ -68,7 +68,6 @@ QStringList VisualisationDataModel::allNames() const
 
 QJsonDocument VisualisationDataModel::dataJson() const
 {
-    qDebug() << "Send dataJson: \n" << m_dataJson;
     return m_dataJson;
 }
 
@@ -129,13 +128,11 @@ void VisualisationDataModel::setBoxplotData(const QVector<QVector<QVector<qreal>
         }
     }
     m_boxplotData = boxPlotData;
-    qDebug() << "m_boxPlotData " << m_boxplotData;
     generateBoxplotJsonDcoument();
 }
 
 QJsonDocument VisualisationDataModel::boxplotDataJson() const
 {
-    qDebug() << "Send m_boxplotDataJson: \n" << m_boxplotDataJson;
     return m_boxplotDataJson;
 }
 
@@ -146,6 +143,5 @@ QVariantList VisualisationDataModel::selectedIndices() const
 
 void VisualisationDataModel::setSelectedIndices(const QVariantList &selectedIndices)
 {
-    qDebug() << "selectedIndices : " << selectedIndices;
     m_selectedIndices = selectedIndices;
 }

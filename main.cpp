@@ -1,4 +1,3 @@
-#include "mainwindow.h"
 #include <QApplication>
 #include <visualisation/core/scatterplotviewwidget.h>
 #include <visualisation/core/matrixscatterplotviewwidget.h>
