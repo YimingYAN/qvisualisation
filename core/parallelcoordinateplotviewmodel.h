@@ -3,10 +3,10 @@
 #include <visualisation/core/visualisationviewmodel.h>
 
 namespace Visualisation  {
-class ParallelCoordinatesPlot : public VisualisationViewModel
+class ParallelCoordinatesPlotViewModel : public VisualisationViewModel
 {
 public:
-    ParallelCoordinatesPlot(QWidget* parent = nullptr);
+    ParallelCoordinatesPlotViewModel(QWidget* parent = nullptr);
 };
 }
 #endif // PARALLELCOORDINATEPLOT_H

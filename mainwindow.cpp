@@ -4,7 +4,7 @@
 #include <visualisation/core/visualisationviewmodel.h>
 #include <visualisation/core/matrixscatterplotviewmodel.h>
 #include <visualisation/core/scatterplotviewmodel.h>
-#include <visualisation/core/parallelcoordinateplot.h>
+#include <visualisation/core/parallelcoordinateplotviewmodel.h>
 
 #include <QtGlobal>
 #include <QGridLayout>
@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    int numData = 50;
+    int numData = 500;
     int numCols = 5;
 
     VisualisationDataModel* dataModel = new VisualisationDataModel;
@@ -54,9 +54,9 @@ MainWindow::MainWindow(QWidget *parent) :
     dataModel->setSelectedIndices(selectedIndices);
 
     // For different node, we declaire different ViewModel
-    //ScatterPlotViewModel* view = new ScatterPlotViewModel(this);
+    ScatterPlotViewModel* view = new ScatterPlotViewModel(this);
     //MatrixScatterPlotViewModel* view = new MatrixScatterPlotViewModel(this);
-    ParallelCoordinatesPlot* view = new ParallelCoordinatesPlot(this);
+    //ParallelCoordinatesPlotViewModel* view = new ParallelCoordinatesPlotViewModel(this);
     view->setDataModel(dataModel);
     view->linkWithJavaScript();
     QGridLayout* layout = new QGridLayout;

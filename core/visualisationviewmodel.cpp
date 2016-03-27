@@ -30,3 +30,8 @@ VisualisationViewModel::~VisualisationViewModel()
 {
 
 }
+
+VisualisationDataModel *VisualisationViewModel::dataModel() const
+{
+    return m_dataModel;
+}

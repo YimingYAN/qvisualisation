@@ -16,8 +16,10 @@ class VisualisationViewModel : public QWebEngineView
 public:
     explicit VisualisationViewModel(QWidget *parent = nullptr);
     virtual void setDataModel(VisualisationDataModel* dataModel);
+    VisualisationDataModel *dataModel() const;
     virtual void linkWithJavaScript();
     virtual ~VisualisationViewModel();
+
 
 private:
     VisualisationDataModel* m_dataModel;

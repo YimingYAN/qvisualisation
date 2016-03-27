@@ -6,7 +6,7 @@
 
 QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): {
-    QT += widgets
+    QT += widgets printsupport svg
     greaterThan(QT_MINOR_VERSION, 3): QT += webenginewidgets webchannel
 }
 CONFIG   += c++11
@@ -22,17 +22,27 @@ SOURCES += main.cpp\
     core/visualisationdatamodel.cpp \
     core/visualisationviewmodel.cpp \
     core/scatterplotviewmodel.cpp \
-    core/parallelcoordinateplot.cpp \
-    core/matrixscatterplotviewmodel.cpp
+    core/matrixscatterplotviewmodel.cpp \
+    core/parallelcoordinateplotviewmodel.cpp \
+    core/visualisationviewwidget.cpp \
+    core/scatterplotviewwidget.cpp \
+    core/matrixscatterplotviewwidget.cpp \
+    core/parallelcoordinatesplotviewwidget.cpp
 
 HEADERS  += mainwindow.h \
     core/visualisationdatamodel.h \
     core/visualisationviewmodel.h \
     core/scatterplotviewmodel.h \
-    core/parallelcoordinateplot.h \
-    core/matrixscatterplotviewmodel.h
+    core/matrixscatterplotviewmodel.h \
+    core/parallelcoordinateplotviewmodel.h \
+    visualizationconstants.h \
+    core/visualisationviewwidget.h \
+    core/scatterplotviewwidget.h \
+    core/matrixscatterplotviewwidget.h \
+    core/parallelcoordinatesplotviewwidget.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    core/visualisationviewwidget.ui
 
 RESOURCES += \
     visualisation.qrc
