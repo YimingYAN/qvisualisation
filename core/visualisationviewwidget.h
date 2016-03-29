@@ -40,7 +40,6 @@ public:
     virtual void setData(const QVector<QVector<qreal> >& dataVec,
                          const QStringList& names);
     virtual void setSelectedIndices(const QVariantList &selected);
-    virtual void setBoxPlotData(const QVector<QVector<QVector<qreal> > > &boxplotData);
 
 private slots:
     void on_actionSave_triggered();

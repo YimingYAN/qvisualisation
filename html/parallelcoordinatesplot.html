@@ -106,34 +106,6 @@
             data_pc[i] = map_pc;
         }
 
-        // *******
-        // Boxplot
-        // *******
-
-
-        var boxplot_data = new Array(nsolutions);
-        for(i=0;i<nsolutions;i++) {
-            boxplot_data[i] = new Array(ndimensions);
-        }
-
-        var boxplotDataJson = dataModel.boxplotDataJson;
-        for(i=0;i<nsolutions;i++) {
-            for(j=0;j<ndimensions; j++) {
-                var bvalue = boxplotDataJson[i][selNamesIdx[j]];
-                var map_boxplot = {};
-                map_boxplot["ID"]=i;
-                map_boxplot["whiskersBottom"]=bvalue["whiskersBottom"];
-                map_boxplot["firstQuartile"] =bvalue["firstQuartile"];
-                map_boxplot["secondQuartile"]=bvalue["secondQuartile"];
-                map_boxplot["thirdQuartile"] =bvalue["thirdQuartile"];
-                map_boxplot["whiskersTop"]   =bvalue["whiskersTop"];
-                boxplot_data[i][j] = map_boxplot;
-            }
-        }
-
-        //var trept = data_pc[0];
-        //alert(trept[selNames[0]]);
-
         // margins
         var margin = {top: 20, right: 20, bottom: 30, left: 40},
             width  = $(window).width()  - 10 - margin.left - margin.right,
@@ -153,15 +125,13 @@
         // call parallel coordinate plot from d3 library with data
         var pc1 = d3.parcoords()("#parcoords_plot")
             .data(data_pc)
-            .data_boxplot(boxplot_data)
-            .dimensionsOrder(dim_map)
             .composite("darken")
             //.color(function(d) { return blue_to_brown(d[name[0]]); })  // quantitative color scale
             .alpha(0.2)
             .render()
             .brushMode("1D-axes")   // enables brushing of objectives
             .reorderable()         // enables objective reordering
-            .interactive();         // enables modifications of the number of axis
+            .interactive();        // enables modifications of the number of axis
 
         pc1.dimensions(selNames);
         window["pc1"] = pc1;

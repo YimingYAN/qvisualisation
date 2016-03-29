@@ -64,11 +64,6 @@ void VisualisationViewWidget::setSelectedIndices(const QVariantList &selected)
     m_data->setSelectedIndices(selected);
 }
 
-void VisualisationViewWidget::setBoxPlotData(const QVector<QVector<QVector<qreal> > > &boxplotData)
-{
-    m_data->setBoxplotData(boxplotData);
-}
-
 void VisualisationViewWidget::on_actionSave_triggered()
 {
     QString fname = QFileDialog::getSaveFileName(this,"Save...",

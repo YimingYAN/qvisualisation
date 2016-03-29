@@ -14,27 +14,18 @@ int main(int argc, char *argv[])
     int numData = 5000;
     int numCols = 5;
     QVector<QVector<qreal> > data;
-    QVector<QVector<QVector<qreal> > > boxPlotData;
     QStringList names;
     QVariantList selectedIndices;
     data.resize(numData);
-    boxPlotData.resize(numData);
 
     for(int i=0; i<numCols; ++i) {
         names.append(QString("DataItem" + QString::number(i)));
     }
     for(int i=0; i<numData; ++i) {
-        boxPlotData[i].resize(numCols);
         for(int j=0; j<numCols; ++j) {
-            boxPlotData[i][j].resize(5);
             qreal bias = 1.0*qrand()/RAND_MAX;
             qreal value = bias*(i+j);
             data[i].append(value);
-            boxPlotData[i][j][0] = value*0.95;
-            boxPlotData[i][j][1] = value*0.98;
-            boxPlotData[i][j][2] = value;
-            boxPlotData[i][j][3] = value*1.02;
-            boxPlotData[i][j][4] = value*1.05;
         }
     }
     for(int i=0; i<numCols; ++i) {
@@ -51,7 +42,6 @@ int main(int argc, char *argv[])
 
     w3.setData(data, names);
     w3.setSelectedIndices(selectedIndices);
-    w3.setBoxPlotData(boxPlotData);
     w3.show();
 
     return a.exec();
