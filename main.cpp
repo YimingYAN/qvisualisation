@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     Visualisation::MatrixScatterPlotViewWidget w2;
     Visualisation::ParallelCoordinatesPlotViewWidget w3;
 
-    int numData = 500;
+    int numData = 5000;
     int numCols = 5;
     QVector<QVector<qreal> > data;
     QVector<QVector<QVector<qreal> > > boxPlotData;
