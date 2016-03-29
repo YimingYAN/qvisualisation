@@ -45,3 +45,6 @@ FORMS    += \
 
 RESOURCES += \
     visualisation.qrc
+
+DISTFILES += \
+    README.md
