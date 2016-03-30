@@ -19,8 +19,8 @@ class VisualisationDataModel : public QObject
     Q_PROPERTY(QJsonDocument dataJson MEMBER m_dataJson
                READ dataJson NOTIFY dataChanged)
     Q_PROPERTY(QStringList allNames
-               READ allNames WRITE setNames NOTIFY dataChanged)
-    Q_PROPERTY(int dataRows READ dataRows)
+               READ allNames WRITE setNames NOTIFY namesChanged)
+    Q_PROPERTY(int dataRows READ dataRows NOTIFY dataChanged)
     Q_PROPERTY(QVariantList selectedIndices READ selectedIndices
                WRITE setSelectedIndices NOTIFY selectedIndicesChanged)
 
@@ -42,6 +42,7 @@ public:
 
 signals:
     void dataChanged();
+    void namesChanged();
     void selectedIndicesChanged();
 
 public slots:

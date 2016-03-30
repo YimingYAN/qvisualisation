@@ -27,6 +27,8 @@ void VisualisationDataModel::setData(const QVector<QVector<qreal> > &data, const
     m_data = data;
     m_names = names;
     generateDataJsonDocument();
+    emit dataChanged();
+    emit namesChanged();
 }
 
 void VisualisationDataModel::setData(const QVector<QVector<qreal> > &data)
@@ -43,6 +45,7 @@ void VisualisationDataModel::setData(const QVector<QVector<qreal> > &data)
     }
     m_data = data;
     generateDataJsonDocument();
+    emit dataChanged();
 }
 
 void VisualisationDataModel::setNames(const QStringList &names)
@@ -59,6 +62,7 @@ void VisualisationDataModel::setNames(const QStringList &names)
     }
     m_names = names;
     generateDataJsonDocument();
+    emit namesChanged();
 }
 
 QStringList VisualisationDataModel::allNames() const
@@ -106,4 +110,5 @@ QVariantList VisualisationDataModel::selectedIndices() const
 void VisualisationDataModel::setSelectedIndices(const QVariantList &selectedIndices)
 {
     m_selectedIndices = selectedIndices;
+    emit selectedIndicesChanged();
 }
