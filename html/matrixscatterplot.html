@@ -1,67 +1,70 @@
 <!doctype html>
 <html lang="en">
 <meta charset="utf-8">
+
 <head>
-<!--  <link rel="stylesheet" type="text/css" href="qrc:///visualisation/html/matrixscatterplot.css">-->
+  <!--  <link rel="stylesheet" type="text/css" href="qrc:///visualisation/html/matrixscatterplot.css">-->
   <script src="qrc:///visualisation/lib/d3.v3/d3.min.js"></script>
   <script src="qrc:///visualisation/lib/jquery.v2/jquery-2.2.2.min.js"></script>
   <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
 
-<style>
-body {
-    margin: auto auto auto auto;
-    height: 100%;
-    width: calc();
-    overflow: hidden;
-    font-size: 12px;
-}
-  .mscatter {
-    float: center;
-  }
+  <style>
+    body {
+      margin: auto auto auto auto;
+      height: 100%;
+      width: calc();
+      overflow: hidden;
+      font-size: 12px;
+    }
 
-  svg {
-    font: 10px sans-serif;
-    padding: 20px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+    .mscatter {
+      float: center;
+    }
 
-  .axis,
-  .frame {
-    shape-rendering: crispEdges;
-  }
+    svg {
+      font: 10px sans-serif;
+      padding: 20px;
+      margin-left: auto;
+      margin-right: auto;
+    }
 
-  .axis line {
-    stroke: #ddd;
-  }
+    .axis,
+    .frame {
+      shape-rendering: crispEdges;
+    }
 
-  .axis path {
-    display: none;
-  }
+    .axis line {
+      stroke: #ddd;
+    }
 
-  .frame {
-    fill: none;
-    stroke: #aaa;
-  }
+    .axis path {
+      display: none;
+    }
 
-  circle {
-    fill-opacity: .7;
-  }
+    .frame {
+      fill: none;
+      stroke: #aaa;
+    }
 
-  circle.hidden {
-    fill: #ccc !important;
-  }
+    circle {
+      fill-opacity: .7;
+    }
 
-  .mscatter .extent {
-    fill: #000;
-    fill-opacity: .125;
-    stroke: #fff;
-  }
-</style>
+    circle.hidden {
+      fill: #ccc !important;
+    }
+
+    .mscatter .extent {
+      fill: #000;
+      fill-opacity: .125;
+      stroke: #fff;
+    }
+  </style>
 </head>
+
 <body>
-    <div id="mscatter_plot" class="mscatter"></div>
-    <script>
+  <div id="mscatter_plot" class="mscatter"></div>
+  <script>
     new QWebChannel(qt.webChannelTransport,
       function(channel) {
         var dataModel = channel.objects.dataModel;
@@ -77,15 +80,15 @@ body {
       d3.select("svg").remove();
       var point_radius = 1.5;
       window["point_radius"] = point_radius;
-      var rows  = dataModel.dataRows;
-      window["rows"]  = rows;
+      var rows = dataModel.dataRows;
+      window["rows"] = rows;
 
       var selNames = new Array();
       var all_names = dataModel.allNames;
       var selNamesIdx = dataModel.selectedIndices;
 
-      for(i = 0; i < selNamesIdx.length; i++) {
-         selNames[i] = all_names[selNamesIdx[i]];
+      for (i = 0; i < selNamesIdx.length; i++) {
+        selNames[i] = all_names[selNamesIdx[i]];
       }
 
       var names = new Array();
@@ -110,20 +113,20 @@ body {
       window["all_names"] = all_names;
 
       var colorgen = d3.scale.category20();
-      var flowers  = data;
+      var flowers = data;
 
-      var width = $(window).width();// - 10;
-      var height= $(window).height(); //- 10;
+      var width = $(window).width(); // - 10;
+      var height = $(window).height(); //- 10;
       var size;
       var xsize;
       var ysize;
       var padding = 10;
 
       var nvariables = selNamesIdx.length;
-      size  = Math.min(width,height)/nvariables - 19.5; // Min(width/cols - 40;
-      var custspace = Math.max(-4*nvariables + 30,4);
-      xsize = width/nvariables - custspace;// - padding/2;
-      ysize = height/nvariables - custspace;//- padding/2;
+      size = Math.min(width, height) / nvariables - 19.5; // Min(width/cols - 40;
+      var custspace = Math.max(-4 * nvariables + 30, 4);
+      xsize = width / nvariables - custspace; // - padding/2;
+      ysize = height / nvariables - custspace; //- padding/2;
 
       window["xsize"] = xsize;
       window["ysize"] = ysize;
@@ -162,8 +165,8 @@ body {
       });
       window["domainByTrait"] = domainByTrait;
 
-      xAxis.tickSize(ysize*n);
-      yAxis.tickSize(-xsize*n);
+      xAxis.tickSize(ysize * n);
+      yAxis.tickSize(-xsize * n);
 
       var brush = d3.svg.brush()
         .x(x)
@@ -174,12 +177,12 @@ body {
       window["brush"] = brush;
 
       d3.select("#mscatter_plot")
-        .attr("width", xsize*n + 2*padding)
-        .attr("height", ysize * n + 2*padding);
+        .attr("width", xsize * n + 2 * padding)
+        .attr("height", ysize * n + 2 * padding);
 
       var svg = d3.select("#mscatter_plot").append("svg")
-        .attr("width", xsize * n + 2*padding)
-        .attr("height", ysize * n + 2*padding)
+        .attr("width", xsize * n + 2 * padding)
+        .attr("height", ysize * n + 2 * padding)
         .append("g")
         .attr("transform", "translate(" + padding + "," + padding / 2 + ")");
 
@@ -188,24 +191,24 @@ body {
         .enter().append("g")
         .attr("class", "x axis")
         .attr("transform", function(d, i) {
-        return "translate(" + (n - i - 1) * xsize + ",0)";
-      })
+          return "translate(" + (n - i - 1) * xsize + ",0)";
+        })
         .each(function(d) {
-        x.domain(domainByTrait[d]);
-        d3.select(this).call(xAxis);
-      });
+          x.domain(domainByTrait[d]);
+          d3.select(this).call(xAxis);
+        });
 
       svg.selectAll(".y.axis")
         .data(traits)
         .enter().append("g")
         .attr("class", "y axis")
         .attr("transform", function(d, i) {
-        return "translate(0," + i*ysize + ")";
-      })
+          return "translate(0," + i * ysize + ")";
+        })
         .each(function(d) {
-        y.domain(domainByTrait[d]);
-        d3.select(this).call(yAxis);
-      });
+          y.domain(domainByTrait[d]);
+          d3.select(this).call(yAxis);
+        });
       window["svg"] = svg;
 
       var cell = svg.selectAll(".cell")
@@ -219,14 +222,14 @@ body {
 
       // Titles for the diagonal.
       cell.filter(function(d) {
-        return d.i === d.j;
-      }).append("text")
+          return d.i === d.j;
+        }).append("text")
         .attr("x", padding)
         .attr("y", padding)
         .attr("dy", ".71em")
         .text(function(d) {
-        return d.x;
-      });
+          return d.x;
+        });
       window["cell"] = cell;
 
       d3.select(self.frameElement).style("height", ysize * n + padding + 20 + "px");
@@ -249,21 +252,22 @@ body {
         .data(data)
         .enter().append("circle")
         .attr("cx", function(d) {
-        return x(d[p.x]);
-      })
+          return x(d[p.x]);
+        })
         .attr("cy", function(d) {
-        return y(d[p.y]);
-      })
+          return y(d[p.y]);
+        })
         .attr("r", point_radius)
         .style("fill", function(d) {
-        return color(d.species);
-      });
+          return color(d.species);
+        });
 
       cell.call(brush);
     }
 
     // Clear the previously-active brush, if any.
     var brushCell;
+
     function brushstart(p) {
       if (brushCell !== p) {
         cell.call(brush.clear());
@@ -281,7 +285,7 @@ body {
       });
     }
 
-     // If the brush is empty, select all circles.
+    // If the brush is empty, select all circles.
 
     function brushend() {
       if (brush.empty()) svg.selectAll(".hidden").classed("hidden", false);
@@ -292,12 +296,13 @@ body {
         n = a.length,
         m = b.length,
         i, j;
-      for (i = -1; ++i < n;) for (j = -1; ++j < m;) c.push({
-            x: a[i],
-            i: i,
-            y: b[j],
-            j: j
-          });
+      for (i = -1; ++i < n;)
+        for (j = -1; ++j < m;) c.push({
+          x: a[i],
+          i: i,
+          y: b[j],
+          j: j
+        });
       return c;
     }
 
@@ -306,7 +311,7 @@ body {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(updatePlot, 50);
     });
-
   </script>
-  </body>
+</body>
+
 </html>
