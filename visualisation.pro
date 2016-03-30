@@ -15,8 +15,6 @@ TEMPLATE = app
 
 INCLUDEPATH += $$PWD/../
 
-message($$INCLUDEPATH)
-
 SOURCES += main.cpp\
     core/visualisationdatamodel.cpp \
     core/visualisationviewmodel.cpp \
@@ -34,7 +32,6 @@ HEADERS  += \
     core/scatterplotviewmodel.h \
     core/matrixscatterplotviewmodel.h \
     core/parallelcoordinateplotviewmodel.h \
-    visualizationconstants.h \
     core/visualisationviewwidget.h \
     core/scatterplotviewwidget.h \
     core/matrixscatterplotviewwidget.h \

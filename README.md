@@ -1,20 +1,29 @@
-Visualisation toolbox based on Qt WebEngine. 
-===
+Visualisation toolbox based on Qt WebEngine
+===========================================
+This toolbox shows how to utilise the latest webengine from Qt to visualise data
+from various sourecs (std::vectors and csv files) via d3.js.
 
+### Requirements
+Qt 5.6.0+ with webengine
+QMake
 
-License
-====
+### License
+Released under MIT license
+Copyright 2015 Yiming Yan
 
-Acknowledgement
-====
+### Acknowledgements
+d3.js v3 is obtained from </br>
+https://d3js.org/ </br>
+Library released under BSD license.</br>
+Copyright 2015 Mike Bostock.
 
-d3.parcoords.css and d3.parcoords.js are obtained from
+d3.parcoords.css and d3.parcoords.js are obtained from </br>
 http://syntagmatic.github.io/parallel-coordinates/
 
 underscore.math.js is obtained from
-https://github.com/syntagmatic/underscore.math
-Copyright 2011 Kai Chang
+https://github.com/syntagmatic/underscore.math </br>
+Copyright 2011 Kai Chang </br>
 Released under MIT license
 
-divgrid.js is obtained from
-http://bl.ocks.org/syntagmatic/3687826
+divgrid.js is obtained from </br>
+http://bl.ocks.org/syntagmatic/3687826 </br>
