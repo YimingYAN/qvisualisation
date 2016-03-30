@@ -1,3 +1,7 @@
+/****************************************************************************
+** This software is released under the MIT license
+** Copyright (C) 2015 Yiming Yan
+****************************************************************************/
 #ifndef PARALLELCOORDINATESPLOTVIEWWIDGET_H
 #define PARALLELCOORDINATESPLOTVIEWWIDGET_H
 #include <visualisation/core/visualisationviewwidget.h>

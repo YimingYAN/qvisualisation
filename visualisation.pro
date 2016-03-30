@@ -44,4 +44,5 @@ RESOURCES += \
     visualisation.qrc
 
 DISTFILES += \
-    README.md
+    README.md \
+    LICENSE

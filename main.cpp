@@ -1,3 +1,7 @@
+/****************************************************************************
+** This software is released under the MIT license
+** Copyright (C) 2015 Yiming Yan
+****************************************************************************/
 #include <QApplication>
 #include <visualisation/core/scatterplotviewwidget.h>
 #include <visualisation/core/matrixscatterplotviewwidget.h>

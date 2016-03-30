@@ -1,3 +1,7 @@
+/****************************************************************************
+** This software is released under the MIT license
+** Copyright (C) 2015 Yiming Yan
+****************************************************************************/
 #include <visualisation/core/visualisationviewmodel.h>
 #include <visualisation/core/visualisationdatamodel.h>
 #include <QWebChannel>

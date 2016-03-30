@@ -1,3 +1,7 @@
+/****************************************************************************
+** This software is released under the MIT license
+** Copyright (C) 2015 Yiming Yan
+****************************************************************************/
 #include <visualisation/core/parallelcoordinatesplotviewwidget.h>
 #include <visualisation/core/parallelcoordinateplotviewmodel.h>
 #include <visualisation/core/visualisationdatamodel.h>

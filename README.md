@@ -12,7 +12,6 @@ QMake
 2. Matrix Scatter Plot
 3. Paralell Coordinates Plot
 
-
 ### License
 Released under MIT license
 Copyright 2015 Yiming Yan
