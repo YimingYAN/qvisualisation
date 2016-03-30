@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     core/visualisationviewwidget.cpp \
     core/scatterplotviewwidget.cpp \
     core/matrixscatterplotviewwidget.cpp \
-    core/parallelcoordinatesplotviewwidget.cpp
+    core/parallelcoordinatesplotviewwidget.cpp \
+    core/mainwindow.cpp
 
 HEADERS  += \
     core/visualisationdatamodel.h \
@@ -35,10 +36,12 @@ HEADERS  += \
     core/visualisationviewwidget.h \
     core/scatterplotviewwidget.h \
     core/matrixscatterplotviewwidget.h \
-    core/parallelcoordinatesplotviewwidget.h
+    core/parallelcoordinatesplotviewwidget.h \
+    core/mainwindow.h
 
 FORMS    += \
-    core/visualisationviewwidget.ui
+    core/visualisationviewwidget.ui \
+    core/mainwindow.ui
 
 RESOURCES += \
     visualisation.qrc
