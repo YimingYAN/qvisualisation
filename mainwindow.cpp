@@ -8,6 +8,9 @@
 #include <visualisation/core/matrixscatterplotviewwidget.h>
 #include <visualisation/core/parallelcoordinatesplotviewwidget.h>
 
+#include <QFileDialog>
+#include <QDir>
+
 using namespace Visualisation;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -71,4 +74,27 @@ void MainWindow::on_demoButton_clicked()
     m_parallcoord->setData(data, names);
     m_parallcoord->setSelectedIndices(selectedIndices);
     m_parallcoord->show();
+}
+
+void MainWindow::on_loadButton_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    tr("Open File"),
+                                                    QDir::homePath(),
+                                                    tr("Data Files (*.csv)"));
+    if(!fileName.isEmpty()) {
+        ui->filePathLineEdit->setText(fileName);
+    }
+
+    loadCsv(fileName);
+}
+
+void MainWindow::on_plotButton_clicked()
+{
+
+}
+
+void MainWindow::loadCsv(const QString &filePath)
+{
+
 }
