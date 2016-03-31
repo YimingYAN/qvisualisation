@@ -3,7 +3,7 @@
 ** Copyright (C) 2016 Yiming Yan
 ****************************************************************************/
 #include <QApplication>
-#include <visualisation/core/mainwindow.h>
+#include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
