@@ -1,6 +1,6 @@
 /****************************************************************************
 ** This software is released under the MIT license
-** Copyright (C) 2015 Yiming Yan
+** Copyright (C) 2016 Yiming Yan
 ****************************************************************************/
 #include <QApplication>
 #include <visualisation/core/mainwindow.h>
