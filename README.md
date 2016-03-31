@@ -4,8 +4,8 @@ This toolbox shows how to utilise the latest webengine from Qt to visualise data
 from various sourecs (std::vectors and csv files) via d3.js.
 
 ### Requirements
-Qt 5.6.0+ with webengine
-QMake
+1. Qt 5.6.0+ with webengine
+2. QMake
 
 ### Tools included
 1. Scatter plot
@@ -13,8 +13,8 @@ QMake
 3. Paralell Coordinates Plot
 
 ### License
-Released under MIT license
-Copyright 2015 Yiming Yan
+Released under [MIT](LICENSE) license </br>
+Copyright 2016 Yiming Yan
 
 ### Acknowledgements
 d3.js v3 is obtained from </br>
