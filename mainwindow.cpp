@@ -9,9 +9,12 @@
 #include <visualisation/core/parallelcoordinatesplotviewwidget.h>
 
 using namespace Visualisation;
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+    , m_scatter(0)
+    , m_mscatter(0)
+    , m_parallcoord(0)
 {
     ui->setupUi(this);
 }
