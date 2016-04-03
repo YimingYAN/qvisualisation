@@ -3,7 +3,6 @@
 <meta charset="utf-8">
 
 <head>
-  <!--  <link rel="stylesheet" type="text/css" href="qrc:///visualisation/html/matrixscatterplot.css">-->
   <script src="qrc:///visualisation/lib/d3.v3/d3.min.js"></script>
   <script src="qrc:///visualisation/lib/jquery.v2/jquery-2.2.2.min.js"></script>
   <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
@@ -69,60 +68,93 @@
       function(channel) {
         var dataModel = channel.objects.dataModel;
         window["dataModel"] = dataModel;
-        updatePlot();
-        dataModel.dataChanged.connect(updatePlot);
-        dataModel.selectedIndicesChanged.connect(updatePlot);
+        receiveData();
+        receiveNames();
+        receiveSelections();
+        drawPlot();
+        dataModel.dataChanged.connect(drawPlot);
+        dataModel.selectedIndicesChanged.connect(drawPlot);
+        dataModel.dataChanged.connect(updateDataReceived);
+        dataModel.namesChanged.connect(updateNamesReceived);
+        dataModel.selectedIndicesChanged.connect(updateSelectionsReceived);
       }
     );
 
+    var clearPlot = function() {
+      var svgSelection = d3.select("svg");
+      if (!svgSelection.empty()) {
+        svgSelection.remove();
+      }
+    }
+
+    var receiveData = function() {
+      // extract data to plot
+      var dataJson = dataModel.dataJson;
+      var rows = dataModel.dataRows;
+      var cols = dataModel.dataCols;
+      window["dataJson"] = dataJson;
+      window["rows"] = rows;
+      window["cols"] = cols;
+    }
+
+    var receiveNames = function() {
+      var allNames = dataModel.allNames;
+      window["allNames"] = allNames;
+    }
+
+    var receiveSelections = function() {
+      var selNames = new Array();
+      var selectedIndices = dataModel.selectedIndices;
+      for (i = 0; i < selectedIndices.length; i++) {
+        selNames[i] = allNames[selectedIndices[i]];
+      }
+      window["selNames"] = selNames;
+      window["selectedIndices"] = selectedIndices;
+    }
+
     var updatePlot = function() {
-      // reset the canvas
-      d3.select("svg").remove();
+      clearPlot();
+      drawPlot();
+    }
+
+    var updateDataReceived = function() {
+      receiveData();
+      updatePlot();
+    }
+
+    var updateNamesReceived = function() {
+      receiveNames();
+      updatePlot();
+    }
+
+    var updateSelectionsReceived = function() {
+      receiveSelections();
+      updatePlot();
+    }
+
+    var drawPlot = function() {
       var point_radius = 1.5;
       window["point_radius"] = point_radius;
-      var rows = dataModel.dataRows;
-      window["rows"] = rows;
 
-      var selNames = new Array();
-      var all_names = dataModel.allNames;
-      var selNamesIdx = dataModel.selectedIndices;
-
-      for (i = 0; i < selNamesIdx.length; i++) {
-        selNames[i] = all_names[selNamesIdx[i]];
-      }
-
-      var names = new Array();
-      names = selNames;
-
-      var spec = ["nospec"];
+      // Restrueture data
       var data = new Array();
-      var dataJson = dataModel.dataJson;
-
       for (i = 0; i < rows; i++) {
         data[i] = new Array();
-        (data[i])["species"] = spec[0];
-        for (j = 0; j < selNamesIdx.length; j++) {
-          (data[i])[names[j]] = (dataJson[i])[names[j]];
+        for (j = 0; j < selectedIndices.length; j++) {
+          (data[i])[selNames[j]] = (dataJson[i])[selNames[j]];
         }
       }
-
       window["data"] = data;
-      window["names"] = names;
-      window["selNames"] = selNames;
-      window["selNamesIdx"] = selNamesIdx;
-      window["all_names"] = all_names;
 
       var colorgen = d3.scale.category20();
-      var flowers = data;
-
-      var width = $(window).width(); // - 10;
-      var height = $(window).height(); //- 10;
+      var width = $(window).width();
+      var height = $(window).height();
       var size;
       var xsize;
       var ysize;
       var padding = 10;
 
-      var nvariables = selNamesIdx.length;
+      var nvariables = selectedIndices.length;
       size = Math.min(width, height) / nvariables - 19.5; // Min(width/cols - 40;
       var custspace = Math.max(-4 * nvariables + 30, 4);
       xsize = width / nvariables - custspace; // - padding/2;
@@ -267,7 +299,6 @@
 
     // Clear the previously-active brush, if any.
     var brushCell;
-
     function brushstart(p) {
       if (brushCell !== p) {
         cell.call(brush.clear());
@@ -286,7 +317,6 @@
     }
 
     // If the brush is empty, select all circles.
-
     function brushend() {
       if (brush.empty()) svg.selectAll(".hidden").classed("hidden", false);
     }
@@ -309,7 +339,7 @@
     var resizeTimer;
     $(window).resize(function() {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(updatePlot, 50);
+      resizeTimer = setTimeout(updatePlot(), 50);
     });
   </script>
 </body>

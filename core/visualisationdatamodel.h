@@ -25,6 +25,7 @@ class VisualisationDataModel : public QObject
     Q_PROPERTY(QStringList allNames
                READ allNames WRITE setNames NOTIFY namesChanged)
     Q_PROPERTY(int dataRows READ dataRows NOTIFY dataChanged)
+    Q_PROPERTY(int dataCols READ dataCols NOTIFY dataChanged)
     Q_PROPERTY(QVariantList selectedIndices READ selectedIndices
                WRITE setSelectedIndices NOTIFY selectedIndicesChanged)
 
