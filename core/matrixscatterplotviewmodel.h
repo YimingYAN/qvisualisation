@@ -1,3 +1,7 @@
+/****************************************************************************
+** This software is released under the MIT license
+** Copyright (C) 2016 Yiming Yan
+****************************************************************************/
 #ifndef MATRIXSCATTERPLOTVIEWMODEL_H
 #define MATRIXSCATTERPLOTVIEWMODEL_H
 #include <visualisation/core/visualisationviewmodel.h>

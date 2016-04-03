@@ -1,3 +1,7 @@
+/****************************************************************************
+** This software is released under the MIT license
+** Copyright (C) 2016 Yiming Yan
+****************************************************************************/
 #include "ui_visualisationviewwidget.h"
 #include <visualisation/core/visualisationviewwidget.h>
 #include <visualisation/core/visualisationdatamodel.h>
@@ -62,11 +66,6 @@ void VisualisationViewWidget::setData(const QVector<QVector<qreal> > &dataVec, c
 void VisualisationViewWidget::setSelectedIndices(const QVariantList &selected)
 {
     m_data->setSelectedIndices(selected);
-}
-
-void VisualisationViewWidget::setBoxPlotData(const QVector<QVector<QVector<qreal> > > &boxplotData)
-{
-    m_data->setBoxplotData(boxplotData);
 }
 
 void VisualisationViewWidget::on_actionSave_triggered()

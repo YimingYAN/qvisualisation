@@ -1,3 +1,7 @@
+/****************************************************************************
+** This software is released under the MIT license
+** Copyright (C) 2016 Yiming Yan
+****************************************************************************/
 #ifndef VISUALISATIONVIEWMODEL_H
 #define VISUALISATIONVIEWMODEL_H
 

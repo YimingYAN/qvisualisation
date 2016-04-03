@@ -1,3 +1,7 @@
+/****************************************************************************
+** This software is released under the MIT license
+** Copyright (C) 2016 Yiming Yan
+****************************************************************************/
 #ifndef VISUALISATIONVIEWWIDGET_H
 #define VISUALISATIONVIEWWIDGET_H
 
@@ -40,7 +44,6 @@ public:
     virtual void setData(const QVector<QVector<qreal> >& dataVec,
                          const QStringList& names);
     virtual void setSelectedIndices(const QVariantList &selected);
-    virtual void setBoxPlotData(const QVector<QVector<QVector<qreal> > > &boxplotData);
 
 private slots:
     void on_actionSave_triggered();

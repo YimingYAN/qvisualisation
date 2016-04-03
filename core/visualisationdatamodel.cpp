@@ -1,3 +1,7 @@
+/****************************************************************************
+** This software is released under the MIT license
+** Copyright (C) 2016 Yiming Yan
+****************************************************************************/
 #include <visualisation/core/visualisationdatamodel.h>
 
 #include <QJsonObject>
@@ -27,6 +31,8 @@ void VisualisationDataModel::setData(const QVector<QVector<qreal> > &data, const
     m_data = data;
     m_names = names;
     generateDataJsonDocument();
+    emit dataChanged();
+    emit namesChanged();
 }
 
 void VisualisationDataModel::setData(const QVector<QVector<qreal> > &data)
@@ -43,6 +49,7 @@ void VisualisationDataModel::setData(const QVector<QVector<qreal> > &data)
     }
     m_data = data;
     generateDataJsonDocument();
+    emit dataChanged();
 }
 
 void VisualisationDataModel::setNames(const QStringList &names)
@@ -59,6 +66,7 @@ void VisualisationDataModel::setNames(const QStringList &names)
     }
     m_names = names;
     generateDataJsonDocument();
+    emit namesChanged();
 }
 
 QStringList VisualisationDataModel::allNames() const
@@ -98,44 +106,6 @@ void VisualisationDataModel::generateDataJsonDocument()
     m_dataJson.setArray(jsonArray);
 }
 
-void VisualisationDataModel::generateBoxplotJsonDcoument()
-{
-    QJsonArray jsonArray;
-    for(int i=0; i<m_boxplotData.size(); ++i) {
-        QJsonArray jsonInnerArray;
-        for(int j=0; j<m_boxplotData[i].size(); ++j) {
-            QJsonObject object;
-            object["whiskersBottom"]=m_boxplotData[i][j][0];
-            object["firstQuartile"] =m_boxplotData[i][j][1];
-            object["secondQuartile"]=m_boxplotData[i][j][2];
-            object["thirdQuartile"] =m_boxplotData[i][j][3];
-            object["whiskersTop"]   =m_boxplotData[i][j][4];
-            jsonInnerArray.append(object);
-        }
-        jsonArray.append(jsonInnerArray);
-    }
-    m_boxplotDataJson.setArray(jsonArray);
-}
-
-void VisualisationDataModel::setBoxplotData(const QVector<QVector<QVector<qreal> > > &boxPlotData)
-{
-    if(boxPlotData.size() == 0 || boxPlotData.size() != m_data.size()) {
-        return;
-    }
-    for(int i=0; i<boxPlotData.size(); ++i) {
-        if(boxPlotData[i].size() != m_data[i].size()) {
-            return;
-        }
-    }
-    m_boxplotData = boxPlotData;
-    generateBoxplotJsonDcoument();
-}
-
-QJsonDocument VisualisationDataModel::boxplotDataJson() const
-{
-    return m_boxplotDataJson;
-}
-
 QVariantList VisualisationDataModel::selectedIndices() const
 {
     return m_selectedIndices;
@@ -144,4 +114,5 @@ QVariantList VisualisationDataModel::selectedIndices() const
 void VisualisationDataModel::setSelectedIndices(const QVariantList &selectedIndices)
 {
     m_selectedIndices = selectedIndices;
+    emit selectedIndicesChanged();
 }
