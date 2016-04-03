@@ -23,7 +23,8 @@ Library released under BSD license.</br>
 Copyright 2015 Mike Bostock.
 
 d3.parcoords.css and d3.parcoords.js are obtained from </br>
-http://syntagmatic.github.io/parallel-coordinates/
+http://syntagmatic.github.io/parallel-coordinates/  </br>
+Copyright (c) 2012, Kai Chang
 
 underscore.math.js is obtained from
 https://github.com/syntagmatic/underscore.math </br>
