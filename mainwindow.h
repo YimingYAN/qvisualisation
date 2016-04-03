@@ -38,10 +38,6 @@ private slots:
     void on_plotButton_clicked();
 
 private:
-    void loadCsv(const QString& filePath);
-    //void loadJson(const QString& filePath);
-    //void loadWeblink(const QUrl& filePath);
-    //void loadXml(const QString& filePath);
     Ui::MainWindow *ui;
     Visualisation::ScatterPlotViewWidget* m_scatter;
     Visualisation::MatrixScatterPlotViewWidget* m_mscatter;

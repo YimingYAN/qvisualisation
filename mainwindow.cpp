@@ -9,7 +9,11 @@
 #include <visualisation/core/parallelcoordinatesplotviewwidget.h>
 
 #include <QFileDialog>
+#include <QMessageBox>
+#include <QFile>
 #include <QDir>
+
+#include <QDebug>
 
 using namespace Visualisation;
 MainWindow::MainWindow(QWidget *parent)
@@ -25,15 +29,9 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
-    if(m_scatter) {
-        delete m_scatter;
-    }
-    if(m_mscatter) {
-        delete m_mscatter;
-    }
-    if(m_parallcoord) {
-        delete m_parallcoord;
-    }
+    delete m_scatter;
+    delete m_mscatter;
+    delete m_parallcoord;
 }
 
 void MainWindow::on_demoButton_clicked()
@@ -85,16 +83,71 @@ void MainWindow::on_loadButton_clicked()
     if(!fileName.isEmpty()) {
         ui->filePathLineEdit->setText(fileName);
     }
-
-    loadCsv(fileName);
 }
 
 void MainWindow::on_plotButton_clicked()
 {
+    QString fileName = ui->filePathLineEdit->text();
+    QFile file(fileName);
+    if(!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::warning(this,
+                             tr("Open File Error"),
+                             file.errorString(),
+                             QMessageBox::Ok);
+        return;
+    }
 
-}
+    int counter = 0;
+    QVector<QVector<qreal> > data;
+    QStringList names;
+    QVariantList selectedIndices;
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+        line = line.trimmed();
+        QString str(line);
+        if(counter == 0) {
+            names = str.split(",");
+            qDebug() << names;
+        } else {
+            QStringList strlist = str.split(",");
+            QVector<qreal> tmp;
+            for(int i=0; i<strlist.length(); ++i) {
+                tmp.append(strlist[i].toDouble());
+            }
+            data.append(tmp);
+        }
+        qDebug() << "counter: " << counter << line;
+        ++counter;
+    }
 
-void MainWindow::loadCsv(const QString &filePath)
-{
+    if(data.size() == 0) {
+        QMessageBox::warning(this,
+                             tr("Open File Error"),
+                             tr("No data."),
+                             QMessageBox::Ok);
+        return;
+    }
+    int numCols = data[0].size();
+    for(int i=0; i<numCols; ++i) {
+        selectedIndices.append(i);
+    }
 
+    if(ui->scatter->isChecked()) {
+        m_scatter = new ScatterPlotViewWidget;
+        m_scatter->setData(data, names);
+        m_scatter->setSelectedIndices(selectedIndices);
+        m_scatter->show();
+    }
+    if(ui->matrixScatter->isChecked()) {
+        m_mscatter = new MatrixScatterPlotViewWidget;
+        m_mscatter->setData(data, names);
+        m_mscatter->setSelectedIndices(selectedIndices);
+        m_mscatter->show();
+    }
+    if(ui->paralCoord->isChecked()) {
+        m_parallcoord = new ParallelCoordinatesPlotViewWidget;
+        m_parallcoord->setData(data, names);
+        m_parallcoord->setSelectedIndices(selectedIndices);
+        m_parallcoord->show();
+    }
 }
