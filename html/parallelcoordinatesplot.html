@@ -87,43 +87,69 @@
       function(channel) {
         var dataModel = channel.objects.dataModel;
         window["dataModel"] = dataModel;
-        updatePlot();
-        dataModel.dataChanged.connect(updatePlot);
-        dataModel.selectedIndicesChanged.connect(updatePlot);
+        receiveData();
+        receiveNames();
+        receiveSelections();
+        drawPlot();
+        dataModel.dataChanged.connect(updateDataReceived);
+        dataModel.namesChanged.connect(updateNamesReceived);
+        dataModel.selectedIndicesChanged.connect(updateSelectionsReceived);
       }
     );
-    var updatePlot = function() {
-      // clear canvas
-      d3.select("svg").remove();
 
-      // construct data array
+    var clearPlot = function() {
+      var svgSelection = d3.select("svg");
+      if (!svgSelection.empty()) {
+        svgSelection.remove();
+      }
+    }
 
-      // dummy data for testing
-      //var data = [
-      //  [0,-0,0,0,0,3 ],
-      //  [1,-1,1,2,1,6 ],
-      //  [2,-2,4,4,0.5,2],
-      //  [3,-3,9,6,0.33,4],
-      //  [4,-4,16,8,0.25,9]
-      //];
-
-      // number of solutions
+    var receiveData = function() {
       var nsolutions = dataModel.dataRows;
       var dataJson = dataModel.dataJson; // get data from c++
-      var data_pc = new Array(nsolutions); // array of objects
-      //alert(nsolutions);
+      window["dataJson"] = dataJson;
+      window["nsolutions"] = nsolutions;
+    }
 
+    var receiveNames = function() {
+      var allNames = dataModel.allNames;
+      window["allNames"] = allNames;
+    }
+
+    var receiveSelections = function() {
       selNamesIdx = dataModel.selectedIndices;
-      var selNames = new Array(selNamesIdx.length);
-      var all_names = dataModel.allNames;
+      window["selNamesIdx"] = selNamesIdx;
+    }
 
+    var updatePlot = function() {
+      clearPlot();
+      drawPlot();
+    }
+
+    var updateDataReceived = function() {
+      receiveData();
+      updatePlot();
+    }
+
+    var updateNamesReceived = function() {
+      receiveNames();
+      updatePlot();
+    }
+
+    var updateSelectionsReceived = function() {
+      receiveSelections();
+      updatePlot();
+    }
+
+    var drawPlot = function() {
+      var data_pc = new Array(nsolutions); // array of objects
+      var selNames = new Array(selNamesIdx.length);
       var dim_map = {};
       for (i = 0; i < selNamesIdx.length; i++) {
-        selNames[i] = all_names[selNamesIdx[i]];
-        //dim_map[selNames[i]]=selNamesIdx[i];
+        selNames[i] = allNames[selNamesIdx[i]];
         dim_map[selNames[i]] = i;
       }
-      //alert(dim_map);
+
       // max and min for color ranges, which is obtained with respect to the first dimension
       var max_v = (dataJson[0])[selNames[0]];
       var min_v = (dataJson[0])[selNames[0]];
@@ -146,13 +172,13 @@
 
       // margins
       var margin = {
-          top: 20,
-          right: 20,
-          bottom: 30,
-          left: 40
-        },
-        width = $(window).width() - 10 - margin.left - margin.right,
-        height = $(window).height() - 10 - margin.top - margin.bottom;
+        top: 20,
+        right: 20,
+        bottom: 30,
+        left: 40
+      };
+      var width = $(window).width() - 10 - margin.left - margin.right;
+      var height = $(window).height() - 10 - margin.top - margin.bottom;
 
       // add marging plus width+height to svg variable
       var svg = d3.select("body").append("svg")
@@ -247,7 +273,7 @@
     $(window).resize(
       function() {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(updatePlot, 200);
+        resizeTimer = setTimeout(updatePlot, 100);
       }
     );
   </script>
