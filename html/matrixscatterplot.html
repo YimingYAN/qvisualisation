@@ -184,18 +184,14 @@
       var color = d3.scale.category10();
       window["color"] = color;
 
-      var domainByTrait = {},
-        traits = d3.keys(data[0]).filter(function(d) {
-          return d !== "species";
-        }),
-        n = traits.length;
-
-      traits.forEach(function(trait) {
-        domainByTrait[trait] = d3.extent(data, function(d) {
-          return d[trait];
+      var domainByName = {};
+      var n = selNames.length;
+      selNames.forEach(function(name) {
+        domainByName[name] = d3.extent(data, function(d) {
+          return d[name];
         });
       });
-      window["domainByTrait"] = domainByTrait;
+      window["domainByName"] = domainByName;
 
       xAxis.tickSize(ysize * n);
       yAxis.tickSize(-xsize * n);
@@ -219,32 +215,32 @@
         .attr("transform", "translate(" + padding + "," + padding / 2 + ")");
 
       svg.selectAll(".x.axis")
-        .data(traits)
+        .data(selNames)
         .enter().append("g")
         .attr("class", "x axis")
         .attr("transform", function(d, i) {
           return "translate(" + (n - i - 1) * xsize + ",0)";
         })
         .each(function(d) {
-          x.domain(domainByTrait[d]);
+          x.domain(domainByName[d]);
           d3.select(this).call(xAxis);
         });
 
       svg.selectAll(".y.axis")
-        .data(traits)
+        .data(selNames)
         .enter().append("g")
         .attr("class", "y axis")
         .attr("transform", function(d, i) {
           return "translate(0," + i * ysize + ")";
         })
         .each(function(d) {
-          y.domain(domainByTrait[d]);
+          y.domain(domainByName[d]);
           d3.select(this).call(yAxis);
         });
       window["svg"] = svg;
 
       var cell = svg.selectAll(".cell")
-        .data(cross(traits, traits))
+        .data(cross(selNames, selNames))
         .enter().append("g")
         .attr("class", "cell")
         .attr("transform", function(d) {
@@ -270,8 +266,8 @@
     function plot(p) {
       var cell = d3.select(this);
 
-      x.domain(domainByTrait[p.x]);
-      y.domain(domainByTrait[p.y]);
+      x.domain(domainByName[p.x]);
+      y.domain(domainByName[p.y]);
 
       cell.append("rect")
         .attr("class", "frame")
@@ -299,11 +295,12 @@
 
     // Clear the previously-active brush, if any.
     var brushCell;
+
     function brushstart(p) {
       if (brushCell !== p) {
         cell.call(brush.clear());
-        x.domain(domainByTrait[p.x]);
-        y.domain(domainByTrait[p.y]);
+        x.domain(domainByName[p.x]);
+        y.domain(domainByName[p.y]);
         brushCell = p;
       }
     }
