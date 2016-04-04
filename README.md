@@ -1,16 +1,19 @@
 Visualisation toolbox based on Qt WebEngine and D3.js
 ===========================================
 This toolbox shows how to utilise the latest webengine from Qt to visualise data
-from various sourecs (std::vectors and csv files) via d3.js.
+from various sourecs via d3.js.
 
 ### Requirements
 1. Qt 5.6.0+ with webengine
 2. QMake
 
 ### Tools included
-1. Scatter plot
-2. Matrix Scatter Plot
-3. Paralell Coordinates Plot
+1. C++ core module that controls/communicates with the Javascript
+2. A simple GUI
+3. Visualisation tools including:
+  * Scatter plot
+  * Scatter plot matrix
+  *  Paralell Coordinates Plot
 
 ### License
 Released under [MIT](LICENSE) license </br>
