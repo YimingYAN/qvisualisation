@@ -72,8 +72,6 @@
         receiveNames();
         receiveSelections();
         drawPlot();
-        dataModel.dataChanged.connect(drawPlot);
-        dataModel.selectedIndicesChanged.connect(drawPlot);
         dataModel.dataChanged.connect(updateDataReceived);
         dataModel.namesChanged.connect(updateNamesReceived);
         dataModel.selectedIndicesChanged.connect(updateSelectionsReceived);
