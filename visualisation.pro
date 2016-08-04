@@ -18,9 +18,6 @@ INCLUDEPATH += $$PWD/../
 SOURCES += main.cpp\
     core/visualisationdatamodel.cpp \
     core/visualisationviewmodel.cpp \
-    core/scatterplotviewmodel.cpp \
-    core/matrixscatterplotviewmodel.cpp \
-    core/parallelcoordinateplotviewmodel.cpp \
     core/visualisationviewwidget.cpp \
     core/scatterplotviewwidget.cpp \
     core/matrixscatterplotviewwidget.cpp \
@@ -30,9 +27,6 @@ SOURCES += main.cpp\
 HEADERS  += \
     core/visualisationdatamodel.h \
     core/visualisationviewmodel.h \
-    core/scatterplotviewmodel.h \
-    core/matrixscatterplotviewmodel.h \
-    core/parallelcoordinateplotviewmodel.h \
     core/visualisationviewwidget.h \
     core/scatterplotviewwidget.h \
     core/matrixscatterplotviewwidget.h \
