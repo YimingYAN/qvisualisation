@@ -8,7 +8,56 @@
         <file>html/matrixscatterplot.css</file>
         <file>html/d3.parcoords.css</file>
         <file>lib/parcoords/d3.parcoords.js</file>
-        <file>lib/divgrid.js</file>
         <file>lib/underscore.math.js</file>
+        <file>lib/slickgrid/examples.css</file>
+        <file>lib/slickgrid/images/actions.gif</file>
+        <file>lib/slickgrid/images/ajax-loader-small.gif</file>
+        <file>lib/slickgrid/images/arrow_redo.png</file>
+        <file>lib/slickgrid/images/arrow_right_peppermint.png</file>
+        <file>lib/slickgrid/images/arrow_right_spearmint.png</file>
+        <file>lib/slickgrid/images/arrow_undo.png</file>
+        <file>lib/slickgrid/images/bullet_blue.png</file>
+        <file>lib/slickgrid/images/bullet_star.png</file>
+        <file>lib/slickgrid/images/bullet_toggle_minus.png</file>
+        <file>lib/slickgrid/images/bullet_toggle_plus.png</file>
+        <file>lib/slickgrid/images/calendar.gif</file>
+        <file>lib/slickgrid/images/collapse.gif</file>
+        <file>lib/slickgrid/images/comment_yellow.gif</file>
+        <file>lib/slickgrid/images/down.gif</file>
+        <file>lib/slickgrid/images/drag-handle.png</file>
+        <file>lib/slickgrid/images/editor-helper-bg.gif</file>
+        <file>lib/slickgrid/images/expand.gif</file>
+        <file>lib/slickgrid/images/header-bg.gif</file>
+        <file>lib/slickgrid/images/header-columns-bg.gif</file>
+        <file>lib/slickgrid/images/header-columns-over-bg.gif</file>
+        <file>lib/slickgrid/images/help.png</file>
+        <file>lib/slickgrid/images/info.gif</file>
+        <file>lib/slickgrid/images/listview.gif</file>
+        <file>lib/slickgrid/images/pencil.gif</file>
+        <file>lib/slickgrid/images/row-over-bg.gif</file>
+        <file>lib/slickgrid/images/sort-asc.gif</file>
+        <file>lib/slickgrid/images/sort-asc.png</file>
+        <file>lib/slickgrid/images/sort-desc.gif</file>
+        <file>lib/slickgrid/images/sort-desc.png</file>
+        <file>lib/slickgrid/images/stripes.png</file>
+        <file>lib/slickgrid/images/tag_red.png</file>
+        <file>lib/slickgrid/images/tick.png</file>
+        <file>lib/slickgrid/images/ui-bg_glass_75_dadada_1x400.png</file>
+        <file>lib/slickgrid/images/ui-bg_glass_75_e6e6e6_1x400.png</file>
+        <file>lib/slickgrid/images/ui-icons_888888_256x240.png</file>
+        <file>lib/slickgrid/images/user_identity_plus.gif</file>
+        <file>lib/slickgrid/images/user_identity.gif</file>
+        <file>lib/slickgrid/jquery-1.7.min.js</file>
+        <file>lib/slickgrid/jquery-ui-1.8.16.custom.css</file>
+        <file>lib/slickgrid/jquery-ui-1.8.16.custom.min.js</file>
+        <file>lib/slickgrid/jquery.event.drag-2.0.min.js</file>
+        <file>lib/slickgrid/slick-default-theme.css</file>
+        <file>lib/slickgrid/slick.columnpicker.css</file>
+        <file>lib/slickgrid/slick.core.js</file>
+        <file>lib/slickgrid/slick.dataview.js</file>
+        <file>lib/slickgrid/slick.grid.css</file>
+        <file>lib/slickgrid/slick.grid.js</file>
+        <file>lib/slickgrid/slick.pager.css</file>
+        <file>lib/slickgrid/slick.pager.js</file>
     </qresource>
 </RCC>
