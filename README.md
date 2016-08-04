@@ -13,7 +13,7 @@ from various sourecs via d3.js.
 3. Visualisation tools including:
   * Scatter plot
   * Scatter plot matrix
-  *  Paralell Coordinates Plot
+  * Paralell Coordinates Plot
 
 ### License
 Released under [MIT](LICENSE) license </br>
@@ -34,5 +34,7 @@ https://github.com/syntagmatic/underscore.math </br>
 Released under MIT license </br>
 Copyright 2011 Kai Chang
 
-divgrid.js is obtained from </br>
-http://bl.ocks.org/syntagmatic/3687826
+SlickGrid is obtained from </br>
+https://github.com/mleibman/SlickGrid </br>
+Released under MIT license </br>
+Copyright (c) 2010 Michael Leibman
