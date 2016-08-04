@@ -3,7 +3,7 @@
 ** Copyright (C) 2016 Yiming Yan
 ****************************************************************************/
 #include <visualisation/core/parallelcoordinatesplotviewwidget.h>
-#include <visualisation/core/parallelcoordinateplotviewmodel.h>
+#include <visualisation/core/visualisationviewmodel.h>
 #include <visualisation/core/visualisationdatamodel.h>
 
 using namespace Visualisation;
@@ -16,11 +16,11 @@ ParallelCoordinatesPlotViewWidget::ParallelCoordinatesPlotViewWidget(QWidget *pa
 void ParallelCoordinatesPlotViewWidget::initialise()
 {
     VisualisationDataModel* dataModel = new VisualisationDataModel;
-    ParallelCoordinatesPlotViewModel* view = new ParallelCoordinatesPlotViewModel(this);
+    VisualisationViewModel* view = new VisualisationViewModel(this);
+    view->setUrl(QUrl("qrc:/visualisation/html/parallelcoordinatesplot.html"));
     view->setDataModel(dataModel);
     view->linkWithJavaScript();
     setView(view);
-    centralWidget()->layout()->addWidget(view);
     setWindowTitle(QString("Parallel Coordinates Plot"));
 }
 

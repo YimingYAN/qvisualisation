@@ -58,6 +58,19 @@ VisualisationDataModel *VisualisationViewWidget::data() const
     return m_data;
 }
 
+void VisualisationViewWidget::addItemToToolBar(QWidget *item)
+{
+    ui->toolBar->addWidget(item);
+}
+
+void VisualisationViewWidget::addSpacerToToolBar()
+{
+    QWidget *spacerWidget = new QWidget(this);
+    spacerWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    spacerWidget->setVisible(true);
+    ui->toolBar->addWidget(spacerWidget);
+}
+
 void VisualisationViewWidget::setData(const QVector<QVector<qreal> > &dataVec, const QStringList &names)
 {
     m_data->setData(dataVec, names);
@@ -200,4 +213,5 @@ void VisualisationViewWidget::setView(VisualisationViewModel *view)
 {
     m_view = view;
     m_data = view->dataModel();
+    centralWidget()->layout()->addWidget(view);
 }

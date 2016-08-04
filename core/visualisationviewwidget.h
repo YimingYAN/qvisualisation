@@ -41,6 +41,9 @@ public:
     VisualisationViewModel *view() const;
     VisualisationDataModel *data() const;
 
+    void addItemToToolBar(QWidget* item);
+    void addSpacerToToolBar();
+
     virtual void setData(const QVector<QVector<qreal> >& dataVec,
                          const QStringList& names);
     virtual void setSelectedIndices(const QVariantList &selected);

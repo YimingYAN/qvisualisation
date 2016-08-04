@@ -3,11 +3,24 @@
 <meta charset="utf-8">
 
 <head>
+  <!-- SlickGrid -->
+  <link rel="stylesheet" href="qrc:///visualisation/lib/slickgrid/slick.grid.css" type="text/css" />
+  <link rel="stylesheet" href="qrc:///visualisation/lib/slickgrid/jquery-ui-1.8.16.custom.css" type="text/css" />
+  <link rel="stylesheet" href="qrc:///visualisation/lib/slickgrid/examples.css" type="text/css" />
+  <link rel="stylesheet" href="qrc:///visualisation/lib/slickgrid/slick.pager.css" type="text/css" />
+
+  <script src="qrc:///visualisation/lib/slickgrid/jquery-1.7.min.js"></script>
+  <script src="qrc:///visualisation/lib/slickgrid/jquery.event.drag-2.0.min.js"></script>
+  <script src="qrc:///visualisation/lib/slickgrid/slick.core.js"></script>
+  <script src="qrc:///visualisation/lib/slickgrid/slick.grid.js"></script>
+  <script src="qrc:///visualisation/lib/slickgrid/slick.pager.js"></script>
+  <script src="qrc:///visualisation/lib/slickgrid/slick.dataview.js"></script>
+  <!-- End SlickGrid -->
+
   <!--Order matters-->
   <link rel="stylesheet" type="text/css" href="qrc:///visualisation/html/d3.parcoords.css">
   <script src="qrc:///visualisation/lib/d3.v3/d3.min.js"></script>
   <script src="qrc:///visualisation/lib/underscore.math.js"></script>
-  <script src="qrc:///visualisation/lib/divgrid.js"></script>
   <script src="qrc:///visualisation/lib/parcoords/d3.parcoords.js"></script>
   <script src="qrc:///visualisation/lib/jquery.v2/jquery-2.2.2.min.js"></script>
   <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
@@ -29,19 +42,26 @@
 
     .parcoords {
       width: calc();
-      height: 50%;
+      height: 60%;
       float: center;
     }
-    /* data table styles */
 
-    #grid {
-      height: 45%;
-      color: black;
-      clear: both;
-      position: relative;
-      top: 60px;
-      left: 15px
-    }
+#grid, #pager {
+  position: fixed;
+  width: 100%;
+}
+#grid {
+  bottom: 0;
+  height: 35%;
+}
+#pager {
+  bottom: 36%;
+  height: 20px;
+}
+
+.cell-title {
+  font-weight: bold;
+}
 
     .row,
     .header {
@@ -81,6 +101,7 @@
 
 <body>
   <div id="parcoords_plot" class="parcoords"></div>
+  <div id="pager"></div>
   <div id="grid"></div>
   <script>
     new QWebChannel(qt.webChannelTransport,
@@ -157,7 +178,7 @@
       var ndimensions = selNamesIdx.length;
       for (i = 0; i < nsolutions; i++) {
         var map_pc = {}; // this is an object that requires names to access its members
-        map_pc["ID"] = i;
+        map_pc["id"] = i;
         for (j = 0; j < ndimensions; j++) {
           value = (dataJson[i])[selNames[j]];
           var temp;
@@ -221,32 +242,95 @@
           if (exploring[d]) d3.timer(explore(d, explore_count));
         });
 
-      // creates a dynamic table with the first 10 elements of the data
-      var grid = d3.divgrid();
-      d3.select("#grid")
-        .datum(data_pc.slice(0, 10)) // first 10 elements
-        .call(grid)
-        .selectAll(".row")
-        .on({
-          "mouseover": function(d) {
-            pc1.highlight([d]);
-          },
-          "mouseout": pc1.unhighlight
-        });
+// *********************************************************************
+//                                  Grid
+// *********************************************************************
+var column_keys = d3.keys(data_pc[0]);
+var columns = column_keys.map(function(key, i) {
+  return {
+    id: key,
+    name: key,
+    field: key,
+    sortable: true
+  }
+});
 
-      // modifies the dynamic table accordingly to the brushed area
-      pc1.on("brush", function(d) {
-        d3.select("#grid")
-          .datum(d.slice(0, 10)) // first 10 elements
-          .call(grid)
-          .selectAll(".row")
-          .on({
-            "mouseover": function(d) {
-              pc1.highlight([d])
-            },
-            "mouseout": pc1.unhighlight
-          });
-      });
+var options = {
+  enableCellNavigation: true,
+  enableColumnReorder: false,
+  multiColumnSort: false,
+  asyncEditorLoading: true,
+  forceFitColumns: false,
+  topPanelHeight: 25
+};
+
+var dataView = new Slick.Data.DataView();
+var grid = new Slick.Grid("#grid", dataView, columns, options);
+var pager = new Slick.Controls.Pager(dataView, grid, $("#pager"));
+
+// wire up model events to drive the grid
+dataView.onRowCountChanged.subscribe(function(e, args) {
+  grid.updateRowCount();
+  grid.render();
+});
+
+dataView.onRowsChanged.subscribe(function(e, args) {
+  grid.invalidateRows(args.rows);
+  grid.render();
+});
+
+// column sorting
+var sortcol = column_keys[0];
+var sortdir = 1;
+
+function comparer(a, b) {
+  var x = a[sortcol],
+    y = b[sortcol];
+  return (x == y ? 0 : (x > y ? 1 : -1));
+}
+
+// click header to sort grid column
+grid.onSort.subscribe(function(e, args) {
+  sortdir = args.sortAsc ? 1 : -1;
+  sortcol = args.sortCol.field;
+  dataView.sort(comparer, args.sortAsc);
+});
+
+// highlight row in chart
+grid.onMouseEnter.subscribe(function(e, args) {
+  // Get row number from grid
+  var grid_row = grid.getCellFromEvent(e).row;
+
+  // Get the id of the item referenced in grid_row
+  var item_id = grid.getDataItem(grid_row).id;
+  var d = pc1.brushed() || data_pc;
+
+  // Get the element position of the id in the data object
+  elementPos = d.map(function(x) {
+    return x.id;
+  }).indexOf(item_id);
+
+  // Highlight that element in the parallel coordinates graph
+  pc1.highlight([d[elementPos]]);
+});
+
+grid.onMouseLeave.subscribe(function(e, args) {
+  pc1.unhighlight();
+});
+
+// fill grid with data
+gridUpdate(data_pc);
+
+// update grid on brush
+pc1.on("brush", function(d) {
+  gridUpdate(d);
+});
+
+function gridUpdate(data) {
+  dataView.beginUpdate();
+  dataView.setItems(data);
+  dataView.endUpdate();
+};
     }
 
     // changes the box that delimitates the selected brush area

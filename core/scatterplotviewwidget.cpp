@@ -4,14 +4,12 @@
 ****************************************************************************/
 #include <visualisation/core/scatterplotviewwidget.h>
 #include <visualisation/core/visualisationdatamodel.h>
-#include <visualisation/core/scatterplotviewmodel.h>
+#include <visualisation/core/visualisationviewmodel.h>
 
 #include <QDebug>
 #include <QLabel>
 #include <QComboBox>
 #include <QPushButton>
-#include <QGridLayout>
-#include <QHBoxLayout>
 
 using namespace Visualisation;
 
@@ -26,39 +24,31 @@ ScatterPlotViewWidget::ScatterPlotViewWidget(QWidget *parent)
 
 ScatterPlotViewWidget::~ScatterPlotViewWidget()
 {
-    if(m_xCombo)
-        delete m_xCombo;
-    if(m_yCombo)
-        delete m_yCombo;
-    if(m_button)
-        delete m_button;
+    delete m_xCombo;
+    delete m_yCombo;
+    delete m_button;
 }
 
 void ScatterPlotViewWidget::initialise()
 {
     VisualisationDataModel* dataModel = new VisualisationDataModel;
-    ScatterPlotViewModel* view = new ScatterPlotViewModel(this);
+    VisualisationViewModel* view = new VisualisationViewModel(this);
+    view->setUrl(QUrl("qrc:/visualisation/html/scatterplot.html"));
     view->setDataModel(dataModel);
     view->linkWithJavaScript();
     setView(view);
 
-    QHBoxLayout* hlayout = new QHBoxLayout();
     QLabel* xLabel = new QLabel("X: ", centralWidget());
+    addItemToToolBar(xLabel);
     m_xCombo = new QComboBox(centralWidget());
+    addItemToToolBar(m_xCombo);
     QLabel* yLabel = new QLabel("Y: ", centralWidget());
+    addItemToToolBar(yLabel);
     m_yCombo = new QComboBox(centralWidget());
+    addItemToToolBar(m_yCombo);
     m_button = new QPushButton("Refresh", centralWidget());
+    addItemToToolBar(m_button);
     connect(m_button, SIGNAL(clicked()), this, SLOT(updateSelectedIndices()));
-    hlayout->addWidget(xLabel);
-    hlayout->addWidget(m_xCombo);
-    hlayout->insertSpacing(2, 30);
-    hlayout->addWidget(yLabel);
-    hlayout->addWidget(m_yCombo);
-    hlayout->addWidget(m_button);
-    hlayout->insertSpacing(5, 30);
-    hlayout->addStretch(2);
-    centralWidget()->layout()->addItem(hlayout);
-    centralWidget()->layout()->addWidget(view);
     centralWidget()->setMinimumSize(200, 200);
     setWindowTitle(QString("Scatter Plot"));
 }

@@ -4,7 +4,7 @@
 ****************************************************************************/
 #include <visualisation/core/matrixscatterplotviewwidget.h>
 #include <visualisation/core/visualisationdatamodel.h>
-#include <visualisation/core/matrixscatterplotviewmodel.h>
+#include <visualisation/core/visualisationviewmodel.h>
 
 #include <QDebug>
 #include <QGridLayout>
@@ -21,10 +21,10 @@ MatrixScatterPlotViewWidget::MatrixScatterPlotViewWidget(QWidget *parent)
 void MatrixScatterPlotViewWidget::initialise()
 {
     VisualisationDataModel* dataModel = new VisualisationDataModel;
-    MatrixScatterPlotViewModel* view = new MatrixScatterPlotViewModel(this);
+    VisualisationViewModel* view = new VisualisationViewModel(this);
+    view->setUrl(QUrl("qrc:/visualisation/html/matrixscatterplot.html"));
     view->setDataModel(dataModel);
     view->linkWithJavaScript();
     setView(view);
-    centralWidget()->layout()->addWidget(view);
     setWindowTitle(QString("Matrix Scatter Plot"));
 }
