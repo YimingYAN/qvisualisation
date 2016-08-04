@@ -13,7 +13,7 @@ from various sourecs via d3.js.
 3. Visualisation tools including:
   * Scatter plot
   * Scatter plot matrix
-  * Paralell Coordinates Plot
+  * Parallel Coordinates Plot
 
 ### License
 Released under [MIT](LICENSE) license </br>
