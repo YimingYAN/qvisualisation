@@ -4,9 +4,9 @@
 ****************************************************************************/
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <visualisation/core/scatterplotviewwidget.h>
-#include <visualisation/core/matrixscatterplotviewwidget.h>
-#include <visualisation/core/parallelcoordinatesplotviewwidget.h>
+#include <core/scatterplotviewwidget.h>
+#include <core/matrixscatterplotviewwidget.h>
+#include <core/parallelcoordinatesplotviewwidget.h>
 
 #include <QFileDialog>
 #include <QMessageBox>

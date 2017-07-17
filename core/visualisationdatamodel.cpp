@@ -2,7 +2,7 @@
 ** This software is released under the MIT license
 ** Copyright (C) 2016 Yiming Yan
 ****************************************************************************/
-#include <visualisation/core/visualisationdatamodel.h>
+#include <core/visualisationdatamodel.h>
 
 #include <QJsonObject>
 #include <QJsonArray>
