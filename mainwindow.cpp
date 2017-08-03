@@ -19,9 +19,6 @@ using namespace Visualisation;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , m_scatter(0)
-    , m_mscatter(0)
-    , m_parallcoord(0)
 {
     ui->setupUi(this);
 }
@@ -29,49 +26,55 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete m_scatter;
-    delete m_mscatter;
-    delete m_parallcoord;
 }
 
 void MainWindow::on_demoButton_clicked()
 {
-    m_scatter = new ScatterPlotViewWidget;
-    m_mscatter = new MatrixScatterPlotViewWidget;
-    m_parallcoord = new ParallelCoordinatesPlotViewWidget;
+    VisualisationViewWidget* scatter = new ScatterPlotViewWidget(this);
+    VisualisationViewWidget* mscatter = new MatrixScatterPlotViewWidget(this);
+    VisualisationViewWidget* parallcoord = new ParallelCoordinatesPlotViewWidget(this);
 
     int numData = 1000;
     int numCols = 5;
-    QVector<QVector<qreal> > data;
-    QStringList names;
-    QVariantList selectedIndices;
-    data.resize(numData);
 
+    QStringList names;
     for(int i=0; i<numCols; ++i) {
         names.append(QString("DataItem" + QString::number(i)));
     }
+
+    // Random data
+    QVector<QVector<qreal> > data;
+    data.resize(numData);
     for(int i=0; i<numData; ++i) {
+        data[i].reserve(numCols);
         for(int j=0; j<numCols; ++j) {
             qreal bias = 1.0*qrand()/RAND_MAX;
             qreal value = bias*(i+j);
             data[i].append(value);
         }
     }
+
+    // Populate selected indices
+    QVariantList selectedIndices;
+    selectedIndices.reserve(numCols);
     for(int i=0; i<numCols; ++i) {
         selectedIndices.append(i);
     }
 
-    m_scatter->setData(data, names);
-    m_scatter->setSelectedIndices(selectedIndices);
-    m_scatter->show();
+    scatter->setData(data, names);
+    scatter->setAttribute(Qt::WA_DeleteOnClose);
+    scatter->setSelectedIndices(selectedIndices);
+    scatter->show();
 
-    m_mscatter->setData(data, names);
-    m_mscatter->setSelectedIndices(selectedIndices);
-    m_mscatter->show();
+    mscatter->setData(data, names);
+    mscatter->setAttribute(Qt::WA_DeleteOnClose);
+    mscatter->setSelectedIndices(selectedIndices);
+    mscatter->show();
 
-    m_parallcoord->setData(data, names);
-    m_parallcoord->setSelectedIndices(selectedIndices);
-    m_parallcoord->show();
+    parallcoord->setData(data, names);
+    parallcoord->setAttribute(Qt::WA_DeleteOnClose);
+    parallcoord->setSelectedIndices(selectedIndices);
+    parallcoord->show();
 }
 
 void MainWindow::on_loadButton_clicked()
@@ -133,21 +136,24 @@ void MainWindow::on_plotButton_clicked()
     }
 
     if(ui->scatter->isChecked()) {
-        m_scatter = new ScatterPlotViewWidget;
-        m_scatter->setData(data, names);
-        m_scatter->setSelectedIndices(selectedIndices);
-        m_scatter->show();
+        VisualisationViewWidget* scatter = new ScatterPlotViewWidget(this);
+        scatter->setAttribute(Qt::WA_DeleteOnClose);
+        scatter->setData(data, names);
+        scatter->setSelectedIndices(selectedIndices);
+        scatter->show();
     }
     if(ui->matrixScatter->isChecked()) {
-        m_mscatter = new MatrixScatterPlotViewWidget;
-        m_mscatter->setData(data, names);
-        m_mscatter->setSelectedIndices(selectedIndices);
-        m_mscatter->show();
+        VisualisationViewWidget* mscatter = new MatrixScatterPlotViewWidget(this);
+        mscatter->setAttribute(Qt::WA_DeleteOnClose);
+        mscatter->setData(data, names);
+        mscatter->setSelectedIndices(selectedIndices);
+        mscatter->show();
     }
     if(ui->paralCoord->isChecked()) {
-        m_parallcoord = new ParallelCoordinatesPlotViewWidget;
-        m_parallcoord->setData(data, names);
-        m_parallcoord->setSelectedIndices(selectedIndices);
-        m_parallcoord->show();
+        VisualisationViewWidget* parallcoord = new ParallelCoordinatesPlotViewWidget(this);
+        parallcoord->setAttribute(Qt::WA_DeleteOnClose);
+        parallcoord->setData(data, names);
+        parallcoord->setSelectedIndices(selectedIndices);
+        parallcoord->show();
     }
 }

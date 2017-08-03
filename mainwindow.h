@@ -11,12 +11,6 @@ namespace Ui {
 class MainWindow;
 }
 
-namespace Visualisation {
-class ScatterPlotViewWidget;
-class MatrixScatterPlotViewWidget;
-class ParallelCoordinatesPlotViewWidget;
-}
-
 enum SOURCE_TYPE {
     CSV,
     JSON,
@@ -39,9 +33,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    Visualisation::ScatterPlotViewWidget* m_scatter;
-    Visualisation::MatrixScatterPlotViewWidget* m_mscatter;
-    Visualisation::ParallelCoordinatesPlotViewWidget* m_parallcoord;
 };
 
 #endif // MAINWINDOW_H
