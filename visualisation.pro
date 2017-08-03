@@ -1,19 +1,20 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2016-03-24T15:28:12
-#
-#-------------------------------------------------
+include(qvisualisation.pri)
 
-QT       += core gui
-greaterThan(QT_MAJOR_VERSION, 4): {
-    QT += widgets printsupport svg
-    greaterThan(QT_MINOR_VERSION, 3): QT += webenginewidgets webchannel
+#QT version check
+!minQtVersion(5, 6, 0) {
+    message("Cannot build QVisualisation with Qt version $${QT_VERSION}.")
+    error("Use at least Qt 5.6.0.")
 }
-CONFIG   += c++11
-TARGET = visualisation
+
+QT += core gui
+QT += widgets printsupport svg
+QT += webenginewidgets webchannel
+
+CONFIG += c++11
+TARGET = qvisualisation
 TEMPLATE = app
 
-INCLUDEPATH += $$PWD/../
+INCLUDEPATH += $$PWD
 
 SOURCES += main.cpp\
     core/visualisationdatamodel.cpp \
@@ -33,7 +34,7 @@ HEADERS  += \
     core/parallelcoordinatesplotviewwidget.h \
     mainwindow.h
 
-FORMS    += \
+FORMS += \
     core/visualisationviewwidget.ui \
     mainwindow.ui
 
