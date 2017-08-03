@@ -2,9 +2,9 @@
 ** This software is released under the MIT license
 ** Copyright (C) 2016 Yiming Yan
 ****************************************************************************/
-#include <visualisation/core/parallelcoordinatesplotviewwidget.h>
-#include <visualisation/core/visualisationviewmodel.h>
-#include <visualisation/core/visualisationdatamodel.h>
+#include <core/parallelcoordinatesplotviewwidget.h>
+#include <core/visualisationviewmodel.h>
+#include <core/visualisationdatamodel.h>
 
 using namespace Visualisation;
 ParallelCoordinatesPlotViewWidget::ParallelCoordinatesPlotViewWidget(QWidget *parent)

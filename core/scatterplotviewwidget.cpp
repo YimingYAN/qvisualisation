@@ -2,9 +2,9 @@
 ** This software is released under the MIT license
 ** Copyright (C) 2016 Yiming Yan
 ****************************************************************************/
-#include <visualisation/core/scatterplotviewwidget.h>
-#include <visualisation/core/visualisationdatamodel.h>
-#include <visualisation/core/visualisationviewmodel.h>
+#include <core/scatterplotviewwidget.h>
+#include <core/visualisationdatamodel.h>
+#include <core/visualisationviewmodel.h>
 
 #include <QDebug>
 #include <QLabel>

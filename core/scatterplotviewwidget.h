@@ -4,7 +4,7 @@
 ****************************************************************************/
 #ifndef SCATTERPLOTVIEWWIDGET_H
 #define SCATTERPLOTVIEWWIDGET_H
-#include <visualisation/core/visualisationviewwidget.h>
+#include <core/visualisationviewwidget.h>
 #include <QObject>
 
 class QComboBox;

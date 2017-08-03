@@ -4,7 +4,7 @@
 ****************************************************************************/
 #ifndef MATRIXSCATTERPLOTVIEWWIDGET_H
 #define MATRIXSCATTERPLOTVIEWWIDGET_H
-#include <visualisation/core/visualisationviewwidget.h>
+#include <core/visualisationviewwidget.h>
 
 namespace Visualisation {
 

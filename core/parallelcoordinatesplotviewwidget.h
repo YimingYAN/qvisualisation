@@ -4,7 +4,7 @@
 ****************************************************************************/
 #ifndef PARALLELCOORDINATESPLOTVIEWWIDGET_H
 #define PARALLELCOORDINATESPLOTVIEWWIDGET_H
-#include <visualisation/core/visualisationviewwidget.h>
+#include <core/visualisationviewwidget.h>
 
 namespace Visualisation {
 class ParallelCoordinatesPlotViewWidget : public VisualisationViewWidget

@@ -3,9 +3,9 @@
 ** Copyright (C) 2016 Yiming Yan
 ****************************************************************************/
 #include "ui_visualisationviewwidget.h"
-#include <visualisation/core/visualisationviewwidget.h>
-#include <visualisation/core/visualisationdatamodel.h>
-#include <visualisation/core/visualisationviewmodel.h>
+#include <core/visualisationviewwidget.h>
+#include <core/visualisationdatamodel.h>
+#include <core/visualisationviewmodel.h>
 
 #include <QFileDialog>
 #include <QMessageBox>
